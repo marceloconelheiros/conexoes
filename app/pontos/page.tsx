@@ -116,12 +116,14 @@ export default function PontosPage() {
       />
 
       <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
-        <Link
-          href="/"
-          className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase transition-colors duration-300 hover:text-gold-soft"
-        >
-          Conexão Negócios
-        </Link>
+        <div className="mx-auto w-full max-w-5xl">
+          <Link
+            href="/"
+            className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase transition-colors duration-300 hover:text-gold-soft"
+          >
+            Conexão Negócios
+          </Link>
+        </div>
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
