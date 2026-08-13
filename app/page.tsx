@@ -1,10 +1,27 @@
 import Link from "next/link";
 
 const flow = [
-  { label: "Empresa", delay: "0.1s" },
-  { label: "Conexão Negócios", delay: "0.25s" },
-  { label: "Telas em pontos estratégicos", delay: "0.4s" },
-  { label: "Consumidores", delay: "0.55s" },
+  {
+    label: "Empresa",
+    detail: "A marca que deseja estar presente no cotidiano da cidade.",
+    delay: "0.1s",
+  },
+  {
+    label: "Conexão Negócios",
+    detail: "A rede que une empresas, telas e audiência local.",
+    delay: "0.22s",
+    highlight: true,
+  },
+  {
+    label: "Telas em pontos estratégicos",
+    detail: "Ambientes frequentados todos os dias por quem passa, permanece e decide.",
+    delay: "0.34s",
+  },
+  {
+    label: "Consumidores",
+    detail: "Quem encontra a marca no caminho do dia — vê, reconhece e escolhe.",
+    delay: "0.46s",
+  },
 ];
 
 export default function Home() {
@@ -19,7 +36,7 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
-      <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-8 pb-2 sm:px-10 lg:px-16">
         <div className="mx-auto w-full max-w-5xl">
           <p className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase">
             Conexão Negócios
@@ -28,7 +45,7 @@ export default function Home() {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="flex min-h-[calc(100vh-5.5rem)] flex-col justify-center px-6 pb-28 sm:px-10 lg:px-16">
+        <section className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start px-6 pt-6 pb-28 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <p
               className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
@@ -106,37 +123,33 @@ export default function Home() {
         </section>
 
         <section className="border-t border-line px-6 py-28 sm:px-10 sm:py-36 lg:px-16">
-          <div className="mx-auto max-w-xl">
-            <p className="mb-16 text-center font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
+          <div className="mx-auto max-w-5xl">
+            <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
               Como funciona
             </p>
 
-            <ol className="flex flex-col items-center">
+            <ol className="mt-16 sm:mt-20">
               {flow.map((step, index) => (
                 <li
                   key={step.label}
-                  className="flex w-full flex-col items-center"
+                  className="animate-fade-up grid grid-cols-1 gap-5 border-t border-line py-12 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:gap-16 sm:py-16"
+                  style={{ animationDelay: step.delay }}
                 >
-                  <div
-                    className="animate-fade-up w-full border border-line bg-surface/70 px-6 py-7 text-center backdrop-blur-sm"
-                    style={{ animationDelay: step.delay }}
-                  >
-                    <span className="block font-sans text-[10px] tracking-[0.32em] text-gold uppercase">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mt-3 block font-display text-2xl tracking-[0.06em] text-foreground uppercase sm:text-3xl">
-                      {step.label}
-                    </span>
-                  </div>
-                  {index < flow.length - 1 ? (
-                    <div
-                      className="flex flex-col items-center py-5"
-                      aria-hidden
+                  <span className="font-display text-[2rem] leading-none text-gold sm:text-[2.4rem]">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="max-w-xl">
+                    <h3
+                      className={`font-display text-[clamp(1.7rem,3.6vw,2.75rem)] leading-[0.95] font-medium tracking-[0.04em] uppercase ${
+                        step.highlight ? "text-gold" : "text-foreground"
+                      }`}
                     >
-                      <span className="animate-draw-line h-10 w-px bg-gold/50" />
-                      <span className="mt-1 text-gold/80">↓</span>
-                    </div>
-                  ) : null}
+                      {step.label}
+                    </h3>
+                    <p className="mt-5 text-base leading-8 text-muted">
+                      {step.detail}
+                    </p>
+                  </div>
                 </li>
               ))}
             </ol>
