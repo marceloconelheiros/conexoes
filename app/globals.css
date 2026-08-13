@@ -1,26 +1,187 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0b0b0c;
+  --foreground: #f4f1ea;
+  --muted: #9a958a;
+  --gold: #c6a667;
+  --gold-soft: #e4d2a3;
+  --line: rgba(198, 166, 103, 0.22);
+  --surface: #141416;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-line: var(--line);
+  --color-surface: var(--surface);
   --font-sans: var(--font-geist-sans);
+  --font-display: var(--font-cormorant);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--line);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: rgba(198, 166, 103, 0.28);
+  color: #fffaf0;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes draw-line {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pulse-gold {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(198, 166, 103, 0.18);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(198, 166, 103, 0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.9s ease-out both;
+}
+
+.animate-draw-line {
+  transform-origin: top;
+  animation: draw-line 0.8s ease-out both;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.95s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.net-ring {
+  fill: none;
+  stroke: rgba(198, 166, 103, 0.16);
+  stroke-width: 0.12;
+}
+
+.net-line,
+.net-arc {
+  fill: none;
+  stroke: rgba(198, 166, 103, 0.42);
+  stroke-width: 0.16;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
+}
+
+.network-stage.is-visible .net-line,
+.network-stage.is-visible .net-arc {
+  animation: net-draw 1.15s ease-out forwards;
+}
+
+@keyframes net-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.net-hub-glow {
+  animation: hub-ring 2.8s ease-in-out infinite;
+}
+
+@keyframes hub-ring {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 0;
+  }
+}
+
+.screen-node {
+  opacity: 0.28;
+}
+
+.screens-stage.is-visible .screen-node {
+  animation: screen-wake 0.7s ease-out both;
+}
+
+@keyframes screen-wake {
+  from {
+    opacity: 0.2;
+    border-color: rgba(198, 166, 103, 0.12);
+  }
+  to {
+    opacity: 1;
+    border-color: rgba(198, 166, 103, 0.5);
+  }
+}
+
+.screens-spine {
+  transform-origin: top;
+}
+
+.screens-stage.is-visible .screens-spine {
+  animation: draw-line 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-fade-up,
+  .animate-draw-line,
+  .network-stage.is-visible .net-line,
+  .network-stage.is-visible .net-arc,
+  .screens-stage.is-visible .screen-node,
+  .screens-stage.is-visible .screens-spine,
+  .net-hub-glow {
+    animation: none;
+  }
+
+  .reveal,
+  .reveal.is-visible,
+  .screen-node {
+    opacity: 1;
+    transform: none;
+  }
 }
