@@ -1,10 +1,8 @@
 import Link from "next/link";
 import type { Business } from "@/data/businesses";
 import {
-  CLASS_LABEL,
   formatCashbackRate,
   getCashbackRate,
-  getStoreClass,
 } from "@/data/ranking";
 import { CoverMedia } from "./CoverMedia";
 
@@ -13,55 +11,44 @@ type BusinessCardProps = {
 };
 
 export function BusinessCard({ business }: BusinessCardProps) {
-  const isPremium = business.plan === "premium";
-  const isPro = business.plan === "pro";
-  const storeClass = getStoreClass(0, business.plan);
   const rate = getCashbackRate(business.plan);
   const profileHref = `/empresa/${business.slug}`;
 
   return (
     <Link
       href={profileHref}
-      className={`group flex h-full flex-col border bg-surface/70 transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold ${
-        isPremium
-          ? "border-gold/55 hover:border-gold"
-          : isPro
-            ? "border-gold/32 hover:border-gold/55"
-            : "border-line hover:border-gold/45"
-      }`}
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-transform duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA1D2C] hover:-translate-y-0.5"
     >
       <div className="relative overflow-hidden">
         <CoverMedia
           src={business.coverImage}
           name={business.name}
           fit={business.coverFit}
-          className="aspect-[16/10] w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+          className="aspect-[16/10] w-full transition-transform duration-500 ease-out group-hover:scale-[1.04]"
         />
 
-        <span className="absolute top-4 right-4 border border-gold/50 bg-background/85 px-3 py-1.5 font-sans text-[9px] tracking-[0.22em] text-gold uppercase backdrop-blur-sm">
-          {CLASS_LABEL[storeClass]}
+        <span className="absolute top-3 left-3 rounded-md bg-[#EA1D2C] px-2.5 py-1 text-[11px] font-semibold text-white">
+          {formatCashbackRate(rate)} de volta
         </span>
       </div>
 
-      <div className="flex flex-1 flex-col px-6 pt-5 pb-5 sm:px-7">
-        <p className="font-sans text-[10px] tracking-[0.24em] text-gold uppercase">
+      <div className="flex flex-1 flex-col px-4 pt-3.5 pb-4">
+        <p className="text-[12px] font-medium tracking-wide text-[#FF5A1F] uppercase">
           {business.category}
-          <span className="mx-2 text-gold/40">·</span>
-          {formatCashbackRate(rate)} cashback
         </p>
-        <h3 className="mt-2.5 font-display text-[1.7rem] leading-[0.95] tracking-[0.04em] text-foreground uppercase sm:text-[1.9rem]">
+        <h3 className="mt-1 text-[1.15rem] leading-snug font-semibold text-[#1a1a1a]">
           {business.name}
         </h3>
-        <p className="mt-3 max-w-md text-sm leading-6 text-muted">
+        <p className="mt-1.5 line-clamp-2 text-[13px] leading-5 text-[#6b6b6b]">
           {business.shortDescription}
         </p>
-        <p className="mt-2 font-sans text-[11px] tracking-[0.16em] text-foreground/70 uppercase">
+        <p className="mt-2 text-[12px] text-[#8a8a8a]">
           {business.neighborhood}
         </p>
 
-        <span className="mt-auto flex pt-4">
-          <span className="inline-flex h-11 w-full items-center justify-center bg-gold px-5 text-[10px] font-medium tracking-[0.2em] text-background uppercase transition-colors duration-300 group-hover:bg-gold-soft">
-            Ver perfil
+        <span className="mt-auto flex pt-3">
+          <span className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-[#EA1D2C] text-[12px] font-semibold tracking-[0.12em] text-white uppercase transition-colors duration-300 group-hover:bg-[#c71826]">
+            Ver loja
           </span>
         </span>
       </div>

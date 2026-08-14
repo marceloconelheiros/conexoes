@@ -9,12 +9,26 @@ type CategoryFilterProps = {
 
 const options: CategoryFilterValue[] = ["Todos", ...BUSINESS_CATEGORIES];
 
+const categoryEmoji: Record<CategoryFilterValue, string> = {
+  Todos: "✨",
+  Alimentação: "🍕",
+  Saúde: "💊",
+  Beleza: "💅",
+  Automotivo: "🚗",
+  "Casa e Construção": "🏠",
+  Educação: "📚",
+  Imobiliárias: "🔑",
+  Moda: "👗",
+  Serviços: "🛠️",
+  "Negócios B2B": "💼",
+};
+
 export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
   return (
     <div
       role="group"
       aria-label="Filtrar por categoria"
-      className="flex flex-wrap gap-2"
+      className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
     >
       {options.map((category) => {
         const isActive = selected === category;
@@ -25,12 +39,13 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
             type="button"
             aria-pressed={isActive}
             onClick={() => onSelect(category)}
-            className={`h-10 px-4 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors duration-300 ${
+            className={`flex h-10 shrink-0 items-center gap-1.5 rounded-full px-4 text-[12px] font-medium whitespace-nowrap transition-colors duration-300 ${
               isActive
-                ? "border border-gold bg-gold/[0.08] text-gold-soft"
-                : "border border-line text-muted hover:border-gold/45 hover:text-foreground"
+                ? "bg-[#EA1D2C] text-white"
+                : "bg-white text-[#3e3e3e] shadow-sm hover:bg-[#fff1ee]"
             }`}
           >
+            <span aria-hidden>{categoryEmoji[category]}</span>
             {category}
           </button>
         );

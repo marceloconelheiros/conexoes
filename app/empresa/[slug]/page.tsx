@@ -197,12 +197,6 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
                     Google Meu Negócio
                   </a>
                 ) : null}
-                <Link
-                  href={`/empresa/${business.slug}/painel`}
-                  className="inline-flex h-12 items-center justify-center px-4 text-[11px] font-medium tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
-                >
-                  Painel da loja
-                </Link>
               </div>
             </div>
           </div>

@@ -160,11 +160,9 @@ export default function AnunciePage() {
               </a>
               <Link
                 href="/negocios"
-                className="animate-pulse-gold-ring inline-flex h-24 w-24 shrink-0 items-center justify-center self-center rounded-full border-2 border-gold bg-gold/10 text-center text-[10px] font-medium tracking-[0.16em] text-gold uppercase transition-colors duration-300 hover:bg-gold/20 hover:text-gold-soft"
+                className={`${linkClass} animate-pulse-cta w-full bg-gold text-background hover:bg-gold-soft sm:w-auto`}
               >
-                Conheça
-                <br />
-                a vitrine
+                Conheça a vitrine
               </Link>
             </div>
           </div>
@@ -472,11 +470,9 @@ export default function AnunciePage() {
           <Reveal delay={220}>
             <Link
               href="/negocios"
-              className="animate-pulse-gold-ring mt-12 inline-flex h-40 w-40 items-center justify-center rounded-full border-2 border-gold bg-gold/10 text-center text-[11px] font-medium tracking-[0.18em] text-gold uppercase transition-colors duration-300 hover:bg-gold/20 hover:text-gold-soft"
+              className={`${linkClass} animate-pulse-cta mt-12 w-full bg-gold text-background hover:bg-gold-soft sm:w-auto`}
             >
-              Conhecer
-              <br />
-              a vitrine
+              Conheça a vitrine
             </Link>
           </Reveal>
         </Section>

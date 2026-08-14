@@ -37,20 +37,17 @@ export function BusinessDirectory({ businesses }: BusinessDirectoryProps) {
         onSubmit={applySearch}
       />
 
-      <div className="mt-12">
-        <CategoryFilter
-          selected={category}
-          onSelect={setCategory}
-        />
+      <div className="mt-4">
+        <CategoryFilter selected={category} onSelect={setCategory} />
       </div>
 
-      <div className="mt-16" aria-live="polite">
+      <div className="mt-6" aria-live="polite">
         {results.length === 0 ? (
-          <div className="border border-line bg-surface/50 px-6 py-20 text-center sm:px-10 sm:py-28">
-            <p className="font-display text-[clamp(1.7rem,4vw,2.6rem)] leading-[0.98] tracking-[0.04em] text-foreground uppercase">
-              Nenhum negócio encontrado.
+          <div className="rounded-2xl bg-white px-6 py-16 text-center shadow-sm">
+            <p className="text-xl font-semibold text-[#1a1a1a]">
+              Nenhuma loja encontrada.
             </p>
-            <p className="mx-auto mt-6 max-w-md text-base leading-8 text-muted">
+            <p className="mx-auto mt-3 max-w-md text-[15px] leading-7 text-[#6b6b6b]">
               Tente outro termo ou escolha uma categoria diferente.
             </p>
           </div>

@@ -97,9 +97,9 @@ export default function Home() {
               </Link>
               <Link
                 href="/negocios"
-                className="inline-flex h-12 items-center justify-center px-4 text-[11px] font-medium tracking-[0.22em] text-foreground/80 uppercase transition-colors duration-300 hover:text-gold"
+                className="animate-pulse-cta inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
               >
-                Conhecer os negócios da rede
+                Conheça a vitrine
               </Link>
             </div>
           </div>
@@ -158,6 +158,12 @@ export default function Home() {
 
         <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto max-w-4xl text-center">
+            <Link
+              href="/anuncie"
+              className="mb-10 inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
+            >
+              Quero anunciar
+            </Link>
             <p className="font-display text-[clamp(1.7rem,4.2vw,3.1rem)] leading-tight font-normal text-foreground">
               Conectando empresas.
               <br />

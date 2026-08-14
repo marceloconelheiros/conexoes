@@ -193,15 +193,15 @@ export function RewardsWallet({ stores }: RewardsWalletProps) {
 
         {selected ? (
           <p className="mt-4 text-sm leading-7 text-muted">
-            Cashback desta loja: {formatCashbackRate(selected.rate)}. Para
-            testar agora, o código do dia está no{" "}
+            Cashback desta loja: {formatCashbackRate(selected.rate)}. O código
+            do dia fica no{" "}
             <Link
-              href={`/empresa/${selected.business.slug}/painel`}
+              href="/perfil"
               className="text-gold transition-colors hover:text-gold-soft"
             >
-              painel da loja
-            </Link>
-            .
+              Perfil
+            </Link>{" "}
+            da loja.
           </p>
         ) : null}
 

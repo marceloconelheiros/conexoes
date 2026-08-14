@@ -94,6 +94,22 @@ body {
   animation: pulse-gold-ring 2.6s ease-in-out infinite;
 }
 
+@keyframes pulse-cta {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(198, 166, 103, 0.55);
+  }
+  50% {
+    transform: scale(1.015);
+    box-shadow: 0 0 0 10px rgba(198, 166, 103, 0);
+  }
+}
+
+.animate-pulse-cta {
+  animation: pulse-cta 1.6s ease-in-out infinite;
+}
+
 .animate-fade-up {
   animation: fade-up 0.9s ease-out both;
 }
@@ -334,6 +350,7 @@ body {
   .net-hub-glow,
   .animate-pulse-gold,
   .animate-pulse-gold-ring,
+  .animate-pulse-cta,
   .freq-stage.is-visible .freq-ad,
   .freq-stage.is-visible .freq-bezel,
   .freq-stage.is-visible .freq-hour,

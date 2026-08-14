@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { AUTH_EVENT } from "@/lib/auth-client";
 
 type NavItem = {
   href: string;
@@ -12,18 +13,21 @@ type NavItem = {
   center?: boolean;
 };
 
-const items: NavItem[] = [
+type PublicSession = {
+  role: "admin" | "store";
+  name: string;
+} | null;
+
+const baseItems: NavItem[] = [
   {
     href: "/",
     label: "Início",
     match: (path) => path === "/",
-    icon: (active) => (
-      <HomeIcon active={active} />
-    ),
+    icon: (active) => <HomeIcon active={active} />,
   },
   {
     href: "/negocios",
-    label: "Rede",
+    label: "Vitrine",
     match: (path) =>
       path.startsWith("/negocios") ||
       path.startsWith("/empresa") ||
@@ -43,16 +47,42 @@ const items: NavItem[] = [
     match: (path) => path.startsWith("/pontos"),
     icon: (active) => <ScreensIcon active={active} />,
   },
-  {
-    href: "/anuncie",
-    label: "Anunciar",
-    match: (path) => path.startsWith("/anuncie"),
-    icon: (active) => <AnnounceIcon active={active} />,
-  },
 ];
+
+const perfilItem: NavItem = {
+  href: "/perfil",
+  label: "Perfil",
+  match: (path) => path.startsWith("/perfil"),
+  icon: (active) => <ProfileIcon active={active} />,
+};
+
+const adminItem: NavItem = {
+  href: "/admin",
+  label: "Admin",
+  match: (path) => path.startsWith("/admin"),
+  icon: (active) => <AdminIcon active={active} />,
+};
 
 export function BottomNav() {
   const pathname = usePathname();
+  const [session, setSession] = useState<PublicSession>(null);
+
+  useEffect(() => {
+    async function load() {
+      const response = await fetch("/api/auth/session");
+      const data = (await response.json()) as { session: PublicSession };
+      setSession(data.session);
+    }
+
+    void load();
+    window.addEventListener(AUTH_EVENT, load);
+    return () => window.removeEventListener(AUTH_EVENT, load);
+  }, []);
+
+  const items = [
+    ...baseItems,
+    session?.role === "admin" ? adminItem : perfilItem,
+  ];
 
   return (
     <nav
@@ -183,19 +213,40 @@ function ScreensIcon({ active }: { active: boolean }) {
   );
 }
 
-function AnnounceIcon({ active }: { active: boolean }) {
+function ProfileIcon({ active }: { active: boolean }) {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <circle
+        cx="12"
+        cy="8.2"
+        r="3.2"
+        stroke="currentColor"
+        strokeWidth={active ? 1.7 : 1.4}
+      />
+      <path
+        d="M5.5 19.2c.8-3.2 3.2-5 6.5-5s5.7 1.8 6.5 5"
+        stroke="currentColor"
+        strokeWidth={active ? 1.7 : 1.4}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function AdminIcon({ active }: { active: boolean }) {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
-        d="M4.5 10.5v3l4 1.2 7.2 3.3V6L8.5 9.3 4.5 10.5Z"
+        d="M12 3.8 19.2 6.6v5.2c0 4.4-3 7.4-7.2 8.6-4.2-1.2-7.2-4.2-7.2-8.6V6.6L12 3.8Z"
         stroke="currentColor"
         strokeWidth={active ? 1.7 : 1.4}
         strokeLinejoin="round"
       />
       <path
-        d="M8.5 14.6v3.2l2.4-.6"
+        d="M9.2 12.1 11.2 14l3.8-4"
         stroke="currentColor"
         strokeWidth={active ? 1.7 : 1.4}
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
