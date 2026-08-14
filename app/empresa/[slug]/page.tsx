@@ -203,14 +203,12 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
           />
         </section>
 
-        <section className="mt-6 rounded-2xl bg-white px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7">
-          <h2 className="text-[1.25rem] font-bold text-[#1a1a1a]">
-            Peça agora
-          </h2>
-          <p className="mt-2 text-[14px] leading-6 text-[#6b6b6b]">
+        <section className="mt-6 rounded-2xl bg-white px-5 py-4 text-center shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7">
+          <h2 className="text-[1.2rem] font-bold text-[#1a1a1a]">Peça agora</h2>
+          <p className="mx-auto mt-1 max-w-lg text-[13px] leading-5 text-[#6b6b6b]">
             Escaneie o QR Code ou fale direto com a loja.
           </p>
-          <div className="mt-5">
+          <div className="mt-3">
             <ContactQr business={business} />
           </div>
         </section>

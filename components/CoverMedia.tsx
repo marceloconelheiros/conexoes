@@ -17,8 +17,12 @@ export function CoverMedia({
   className = "",
 }: CoverMediaProps) {
   const [failed, setFailed] = useState(false);
+  const resolved =
+    src && src.startsWith("http")
+      ? `https://wsrv.nl/?url=${encodeURIComponent(src)}&w=1400&h=900&fit=cover`
+      : src;
 
-  if (!src || failed) {
+  if (!resolved || failed) {
     return <CoverArt name={name} className={className} />;
   }
 
@@ -41,7 +45,7 @@ export function CoverMedia({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={src}
+      src={resolved}
       alt=""
       className={`object-cover ${className}`}
       onError={() => setFailed(true)}

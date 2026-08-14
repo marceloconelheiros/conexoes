@@ -331,8 +331,8 @@ export function getPrimaryContactLabel(business: Business): string {
 export function getQrCodeImageUrl(data: string, size = 240): string {
   const params = new URLSearchParams({
     size: `${size}x${size}`,
-    bgcolor: "0b0b0c",
-    color: "c6a667",
+    bgcolor: "ffffff",
+    color: "000000",
     qzone: "2",
     data,
   });

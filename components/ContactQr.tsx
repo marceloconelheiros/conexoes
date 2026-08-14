@@ -12,32 +12,29 @@ type ContactQrProps = {
 export function ContactQr({ business }: ContactQrProps) {
   const url = getPrimaryContactUrl(business);
   const label = getPrimaryContactLabel(business);
-  const src = getQrCodeImageUrl(url);
+  const src = getQrCodeImageUrl(url, 160);
 
   return (
-    <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
-      <div className="rounded-2xl bg-[#f5f5f5] p-3 shadow-[0_8px_20px_rgba(0,0,0,0.08)]">
+    <div className="flex flex-col items-center text-center">
+      <div className="rounded-xl bg-white p-2 shadow-[0_8px_20px_rgba(0,0,0,0.1)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={`QR Code para ${label} da ${business.name}`}
-          width={168}
-          height={168}
-          className="h-[168px] w-[168px] rounded-xl bg-white"
+          width={132}
+          height={132}
+          className="mx-auto h-[132px] w-[132px] bg-white"
         />
       </div>
-      <div className="max-w-sm">
-        <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
-          Aproxime a câmera
-        </p>
-        <p className="mt-2 text-[1.2rem] font-bold text-[#1a1a1a]">
-          QR Code · {label}
-        </p>
-        <p className="mt-2 text-[14px] leading-6 text-[#6b6b6b]">
-          Escaneie para abrir o {label.toLowerCase()} de {business.name} no
-          celular.
-        </p>
-      </div>
+      <p className="mt-2.5 text-[12px] font-semibold text-[#EA1D2C] uppercase">
+        Aproxime a câmera
+      </p>
+      <p className="mt-0.5 text-[15px] font-bold leading-tight text-[#1a1a1a]">
+        QR Code · {label}
+      </p>
+      <p className="mt-1 max-w-xs text-[13px] leading-5 text-[#6b6b6b]">
+        Escaneie para abrir o {label.toLowerCase()} de {business.name}.
+      </p>
     </div>
   );
 }

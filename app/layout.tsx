@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
+import { BackButton } from "@/components/BackButton";
 import { BrowseTracker } from "@/components/BrowseTracker";
 import { PwaRegister } from "@/components/PwaRegister";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           className="fixed inset-x-0 top-0 z-50 h-[env(safe-area-inset-top)] bg-[#0b0b0c]"
         />
         {children}
+        <BackButton />
         <BottomNav />
         <BrowseTracker />
         <PwaRegister />

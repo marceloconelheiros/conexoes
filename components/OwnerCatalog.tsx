@@ -92,7 +92,7 @@ export function OwnerCatalog({ slug }: { slug: string }) {
             onChange={(event) => setPromo(event.target.checked)}
             className="accent-[#c6a667]"
           />
-          <span className="font-sans text-[10px] tracking-[0.2em] text-muted uppercase">
+          <span className="font-sans text-[14px] text-muted">
             Promoção da semana
           </span>
         </label>
