@@ -14,7 +14,7 @@ type NavItem = {
 };
 
 type PublicSession = {
-  role: "admin" | "store";
+  role: "admin" | "store" | "user";
   name: string;
 } | null;
 

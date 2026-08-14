@@ -13,7 +13,14 @@ export type StoreSession = {
   name: string;
 };
 
-export type Session = AdminSession | StoreSession;
+export type UserSession = {
+  role: "user";
+  id: string;
+  name: string;
+  email: string;
+};
+
+export type Session = AdminSession | StoreSession | UserSession;
 
 export function encodeSession(session: Session) {
   return Buffer.from(JSON.stringify(session), "utf8").toString("base64url");
@@ -26,6 +33,7 @@ export function parseSession(value?: string | null): Session | null {
     const data = JSON.parse(raw) as Session;
     if (data.role === "admin" && data.email && data.id) return data;
     if (data.role === "store" && data.slug && data.name) return data;
+    if (data.role === "user" && data.email && data.id && data.name) return data;
     return null;
   } catch {
     return null;

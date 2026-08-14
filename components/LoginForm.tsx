@@ -4,17 +4,19 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { notifyAuth } from "@/lib/auth-client";
 
-type LoginMode = "store" | "admin";
+type LoginMode = "user" | "store" | "admin";
 
 type LoginFormProps = {
   stores: { slug: string; name: string }[];
   initialMode?: LoginMode;
 };
 
-export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
+export function LoginForm({ stores, initialMode = "user" }: LoginFormProps) {
   const router = useRouter();
   const [mode, setMode] = useState<LoginMode>(initialMode);
+  const [registering, setRegistering] = useState(false);
   const [slug, setSlug] = useState(stores[0]?.slug ?? "");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -25,14 +27,23 @@ export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
     setError("");
     setPending(true);
 
+    const body =
+      mode === "admin"
+        ? { role: "admin", email, password }
+        : mode === "store"
+          ? { role: "store", slug, password }
+          : {
+              role: "user",
+              action: registering ? "register" : "login",
+              name,
+              email,
+              password,
+            };
+
     const response = await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(
-        mode === "admin"
-          ? { role: "admin", email, password }
-          : { role: "store", slug, password },
-      ),
+      body: JSON.stringify(body),
     });
 
     const data = (await response.json()) as {
@@ -58,13 +69,20 @@ export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
         Acesso
       </p>
       <h2 className="mt-3 font-display text-[1.8rem] leading-tight tracking-[0.04em] text-foreground uppercase">
-        Entrar
+        {mode === "user" && registering ? "Criar conta" : "Entrar"}
       </h2>
       <p className="mt-3 text-sm leading-7 text-muted">
-        Anunciante vê a loja no Perfil. Admin é só para a Conexão Negócios.
+        {mode === "user"
+          ? "Guarde fotos, gostos, documentos e o histórico da sua navegação na rede."
+          : "Anunciante vê a loja no Perfil. Admin é só para a Conexão Negócios."}
       </p>
 
-      <div className="mt-8 grid grid-cols-2 gap-2">
+      <div className="mt-8 grid grid-cols-3 gap-2">
+        <ModeButton
+          active={mode === "user"}
+          onClick={() => setMode("user")}
+          label="Cliente"
+        />
         <ModeButton
           active={mode === "store"}
           onClick={() => setMode("store")}
@@ -96,18 +114,34 @@ export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
             </select>
           </label>
         ) : (
-          <label className="block">
-            <span className="font-sans text-[10px] tracking-[0.2em] text-gold uppercase">
-              E-mail
-            </span>
-            <input
-              type="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
-              autoComplete="username"
-              className="mt-3 h-12 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
-            />
-          </label>
+          <>
+            {mode === "user" && registering ? (
+              <label className="block">
+                <span className="font-sans text-[10px] tracking-[0.2em] text-gold uppercase">
+                  Nome
+                </span>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  autoComplete="name"
+                  className="mt-3 h-12 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+                />
+              </label>
+            ) : null}
+            <label className="block">
+              <span className="font-sans text-[10px] tracking-[0.2em] text-gold uppercase">
+                E-mail
+              </span>
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                autoComplete="username"
+                className="mt-3 h-12 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+              />
+            </label>
+          </>
         )}
 
         <label className="block">
@@ -118,7 +152,9 @@ export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            autoComplete="current-password"
+            autoComplete={
+              registering ? "new-password" : "current-password"
+            }
             className="mt-3 h-12 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
           />
         </label>
@@ -130,9 +166,26 @@ export function LoginForm({ stores, initialMode = "store" }: LoginFormProps) {
           disabled={pending}
           className="mt-3 inline-flex h-12 w-full items-center justify-center bg-gold px-5 text-[11px] tracking-[0.2em] text-background uppercase hover:bg-gold-soft disabled:opacity-60"
         >
-          {pending ? "Entrando..." : "Entrar"}
+          {pending
+            ? "Aguarde..."
+            : mode === "user" && registering
+              ? "Criar conta"
+              : "Entrar"}
         </button>
       </form>
+
+      {mode === "user" ? (
+        <button
+          type="button"
+          onClick={() => {
+            setRegistering((current) => !current);
+            setError("");
+          }}
+          className="mt-5 w-full text-center text-[10px] tracking-[0.18em] text-gold uppercase hover:text-gold-soft"
+        >
+          {registering ? "Já tenho conta" : "Criar conta de cliente"}
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -150,7 +203,7 @@ function ModeButton({
     <button
       type="button"
       onClick={onClick}
-      className={`h-10 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors duration-300 ${
+      className={`h-10 px-1 text-[9px] font-medium tracking-[0.14em] uppercase transition-colors duration-300 sm:text-[10px] sm:tracking-[0.18em] ${
         active
           ? "border border-gold bg-gold/[0.08] text-gold-soft"
           : "border border-line text-muted hover:border-gold/45 hover:text-foreground"

@@ -14,6 +14,17 @@ export async function GET() {
     });
   }
 
+  if (session.role === "user") {
+    return Response.json({
+      session: {
+        role: session.role,
+        name: session.name,
+        email: session.email,
+        id: session.id,
+      },
+    });
+  }
+
   return Response.json({
     session: {
       role: session.role,

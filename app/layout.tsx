@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
 import { BottomNav } from "@/components/BottomNav";
+import { BrowseTracker } from "@/components/BrowseTracker";
 import { PwaRegister } from "@/components/PwaRegister";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         {children}
         <BottomNav />
+        <BrowseTracker />
         <PwaRegister />
       </body>
     </html>

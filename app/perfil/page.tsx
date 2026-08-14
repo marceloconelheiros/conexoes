@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/LoginForm";
 import { StoreDashboard } from "@/components/StoreDashboard";
+import { UserProfile } from "@/components/UserProfile";
 import { getBusinessBySlug, getBusinesses } from "@/data/businesses";
 import { getSession } from "@/lib/auth";
 
@@ -59,21 +60,24 @@ export default async function PerfilPage({ searchParams }: PerfilPageProps) {
         <div className="mx-auto w-full max-w-6xl">
           {store ? (
             <StoreDashboard business={store} />
+          ) : session?.role === "user" ? (
+            <UserProfile email={session.email} name={session.name} />
           ) : (
             <>
               <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
                 Perfil
               </p>
               <h1 className="mt-6 font-display text-[clamp(2rem,5.5vw,3.8rem)] leading-[0.92] font-medium tracking-[0.04em] text-foreground uppercase">
-                Sua loja
+                Sua conta
               </h1>
               <p className="mt-6 max-w-xl text-base leading-8 text-muted">
-                Anunciante entra aqui para ver os dados da loja, os clientes e a
-                vitrine. Admin tem aba própria, só com o login da operação.
+                Cliente guarda fotos, gostos e documentos. Anunciante entra
+                para ver a loja. Admin tem aba própria, só com o login da
+                operação.
               </p>
               <div className="mt-12">
                 <LoginForm
-                  initialMode={next === "/admin" ? "admin" : "store"}
+                  initialMode={next === "/admin" ? "admin" : "user"}
                   stores={businesses.map((item) => ({
                     slug: item.slug,
                     name: item.name,

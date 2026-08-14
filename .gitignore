@@ -42,3 +42,6 @@ next-env.d.ts
 
 .vercel
 .env*
+
+# contas de usuários criadas em runtime
+/data/users.json
