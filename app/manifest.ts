@@ -8,6 +8,7 @@ export default function manifest(): MetadataRoute.Manifest {
       "Rede de mídia digital, vitrine local e pontos de recompensa em Marília.",
     start_url: "/",
     scope: "/",
+    id: "/",
     display: "standalone",
     orientation: "portrait",
     background_color: "#0b0b0c",

@@ -5,6 +5,7 @@ import { LogoMark } from "@/components/CoverArt";
 import { CoverMedia } from "@/components/CoverMedia";
 import { ContactQr } from "@/components/ContactQr";
 import { DEFAULT_CATALOG } from "@/data/catalog";
+import { StoreCatalog } from "@/components/StoreCatalog";
 import { StoreComments } from "@/components/StoreComments";
 import { StoreInsights } from "@/components/StoreInsights";
 import { getStoreAnalytics } from "@/data/analytics";
