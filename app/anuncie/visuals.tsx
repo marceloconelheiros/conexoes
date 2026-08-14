@@ -94,6 +94,15 @@ const hours = [
   { label: "18h", delay: "freq-delay-6" },
 ];
 
+const brands = [
+  { delay: "freq-delay-1", line1: "Studio", line2: "Norte" },
+  { delay: "freq-delay-2", line1: "Clínica", line2: "Atlas" },
+  { delay: "freq-delay-3", line1: "Casa", line2: "Leme" },
+  { delay: "freq-delay-4", line1: "Oficina", line2: "Prisma" },
+  { delay: "freq-delay-5", line1: "Imobiliária", line2: "Vale" },
+  { delay: "freq-delay-6", line1: "Café", line2: "Brasa" },
+];
+
 export function FrequencyCycle() {
   return (
     <Reveal className="freq-stage mt-16 sm:mt-20">
@@ -110,11 +119,18 @@ export function FrequencyCycle() {
               </span>
             </div>
 
-            <p className="freq-ad font-display text-[clamp(1.8rem,5vw,2.8rem)] leading-[0.92] tracking-[0.06em] text-foreground uppercase">
-              Sua
-              <br />
-              marca
-            </p>
+            <div className="relative min-h-[4.6rem] sm:min-h-[5.4rem]" aria-hidden>
+              {brands.map((brand) => (
+                <p
+                  key={brand.delay}
+                  className={`freq-brand ${brand.delay} absolute inset-x-0 top-0 font-display text-[clamp(1.8rem,5vw,2.8rem)] leading-[0.92] tracking-[0.06em] text-foreground uppercase`}
+                >
+                  {brand.line1}
+                  <br />
+                  {brand.line2}
+                </p>
+              ))}
+            </div>
 
             <p className="font-sans text-[10px] tracking-[0.22em] text-muted uppercase">
               Retorna ao longo do dia
@@ -123,8 +139,9 @@ export function FrequencyCycle() {
         </div>
 
         <p className="sr-only">
-          Representação visual de um anúncio reaparecendo em ciclos ao longo do
-          horário de atendimento.
+          Representação visual da programação: anunciantes locais aparecem em
+          ciclos ao longo do horário de atendimento, como Studio Norte, Clínica
+          Atlas, Casa Leme, Oficina Prisma, Imobiliária Vale e Café Brasa.
         </p>
 
         <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-6" aria-hidden>
@@ -352,7 +369,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`border-t border-line px-6 py-28 sm:px-10 sm:py-36 lg:px-16 ${className}`}
+      className={`px-6 py-8 sm:px-10 sm:py-10 lg:px-16 ${className}`}
     >
       <div className="mx-auto w-full max-w-5xl">{children}</div>
     </section>

@@ -87,7 +87,7 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="px-6 pb-20 sm:px-10 lg:px-16">
+        <section className="px-6 pb-10 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <div className="relative overflow-hidden border border-line">
               <CoverMedia
@@ -196,7 +196,7 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
           </div>
         </section>
 
-        <section className="border-t border-line px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto grid w-full max-w-5xl gap-12 sm:grid-cols-2 sm:gap-16">
             <Reveal>
               <div>
@@ -267,7 +267,7 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
           </div>
         </section>
 
-        <section className="border-t border-line px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <Reveal>
               <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
@@ -285,7 +285,7 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
         </section>
 
         {gallery.length > 0 ? (
-        <section className="border-t border-line px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <Reveal>
               <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">

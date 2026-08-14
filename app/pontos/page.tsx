@@ -92,7 +92,7 @@ function Section({
   return (
     <section
       id={id}
-      className={`border-t border-line px-6 py-28 sm:px-10 sm:py-36 lg:px-16 ${className}`}
+      className={`px-6 py-8 sm:px-10 sm:py-10 lg:px-16 ${className}`}
     >
       <div className="mx-auto w-full max-w-5xl">{children}</div>
     </section>
@@ -127,7 +127,7 @@ export default function PontosPage() {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="flex min-h-[calc(100vh-5.5rem)] flex-col justify-center px-6 pb-28 sm:px-10 lg:px-16">
+        <section className="flex flex-col px-6 pb-8 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <p
               className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
@@ -514,7 +514,7 @@ export default function PontosPage() {
           </div>
         </Section>
 
-        <Section id="contato" className="sm:py-40">
+        <Section id="contato">
           <div className="mx-auto max-w-3xl text-center">
             <Reveal>
               <h2 className="font-display text-[clamp(1.85rem,4.8vw,3.6rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase">

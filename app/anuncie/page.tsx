@@ -106,7 +106,7 @@ export default function AnunciePage() {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="flex min-h-[calc(100vh-5.5rem)] flex-col justify-center px-6 pb-28 sm:px-10 lg:px-16">
+        <section className="flex flex-col px-6 pb-8 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <p
               className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
@@ -522,7 +522,7 @@ export default function AnunciePage() {
           </div>
         </Section>
 
-        <Section className="sm:py-40">
+        <Section>
           <div className="mx-auto max-w-3xl text-center">
             <Reveal>
               <h2 className="font-display text-[clamp(1.85rem,4.8vw,3.6rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase">

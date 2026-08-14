@@ -235,9 +235,29 @@ body {
   }
 }
 
+@keyframes freq-brand {
+  0%,
+  3%,
+  15%,
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  6%,
+  12% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.freq-brand {
+  opacity: 0;
+}
+
 .freq-stage.is-visible .freq-ad,
 .freq-stage.is-visible .freq-bezel,
-.freq-stage.is-visible .freq-hour {
+.freq-stage.is-visible .freq-hour,
+.freq-stage.is-visible .freq-brand {
   animation-duration: 12s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
@@ -245,6 +265,10 @@ body {
 
 .freq-stage.is-visible .freq-ad {
   animation-name: freq-pulse;
+}
+
+.freq-stage.is-visible .freq-brand {
+  animation-name: freq-brand;
 }
 
 .freq-stage.is-visible .freq-bezel {
@@ -288,7 +312,8 @@ body {
   .net-hub-glow,
   .freq-stage.is-visible .freq-ad,
   .freq-stage.is-visible .freq-bezel,
-  .freq-stage.is-visible .freq-hour {
+  .freq-stage.is-visible .freq-hour,
+  .freq-stage.is-visible .freq-brand {
     animation: none;
   }
 
@@ -296,6 +321,15 @@ body {
   .reveal.is-visible,
   .screen-node,
   .freq-ad {
+    opacity: 1;
+    transform: none;
+  }
+
+  .freq-brand {
+    opacity: 0;
+  }
+
+  .freq-brand.freq-delay-1 {
     opacity: 1;
     transform: none;
   }

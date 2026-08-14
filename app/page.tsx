@@ -45,7 +45,7 @@ export default function Home() {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="flex min-h-[calc(100vh-4.5rem)] flex-col justify-start px-6 pt-6 pb-28 sm:px-10 lg:px-16">
+        <section className="flex flex-col justify-start px-6 pt-6 pb-8 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <p
               className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
@@ -105,7 +105,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-line px-6 py-28 sm:px-10 sm:py-36 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto max-w-5xl">
             <h2 className="font-display text-[clamp(2.2rem,6vw,5rem)] leading-[0.95] font-medium tracking-[0.02em] text-foreground uppercase">
               <span className="text-[1.12em]">10 pontos.</span>
@@ -122,7 +122,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-line px-6 py-28 sm:px-10 sm:py-36 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto max-w-5xl">
             <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
               Como funciona
@@ -132,7 +132,7 @@ export default function Home() {
               {flow.map((step, index) => (
                 <li
                   key={step.label}
-                  className="animate-fade-up grid grid-cols-1 gap-5 border-t border-line py-12 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:gap-16 sm:py-16"
+                  className="animate-fade-up grid grid-cols-1 gap-5 border-t border-line py-8 sm:grid-cols-[6.5rem_minmax(0,1fr)] sm:gap-16 sm:py-10"
                   style={{ animationDelay: step.delay }}
                 >
                   <span className="font-display text-[2rem] leading-none text-gold sm:text-[2.4rem]">
@@ -156,7 +156,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="border-t border-line px-6 py-28 sm:px-10 sm:py-40 lg:px-16">
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto max-w-4xl text-center">
             <p className="font-display text-[clamp(1.7rem,4.2vw,3.1rem)] leading-tight font-normal text-foreground">
               Conectando empresas.
