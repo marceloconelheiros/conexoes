@@ -60,14 +60,14 @@ export function StoreComments({ business }: { business: Business }) {
   }
 
   return (
-    <div>
-      <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
+    <div className="rounded-2xl bg-white px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7">
+      <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
         Comentários
       </p>
-      <h2 className="mt-4 font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-tight font-medium text-foreground">
-        Conte como foi. É assim que o cashback conta.
+      <h2 className="mt-2 text-[1.35rem] font-bold text-[#1a1a1a]">
+        Conte como foi
       </h2>
-      <p className="mt-4 max-w-lg text-sm leading-7 text-muted">
+      <p className="mt-2 max-w-lg text-[14px] leading-6 text-[#6b6b6b]">
         Depois do pedido no WhatsApp, um comentário na loja confirma a
         experiência e gera o crédito.
       </p>
@@ -77,24 +77,24 @@ export function StoreComments({ business }: { business: Business }) {
         onChange={(event) => setText(event.target.value)}
         rows={4}
         placeholder="Como foi o atendimento, o produto, a promoção da semana..."
-        className="mt-8 w-full border border-line bg-background/70 px-4 py-3 text-sm leading-7 outline-none focus:border-gold/55"
+        className="mt-5 w-full rounded-xl border border-[#eadfdb] bg-[#fafafa] px-4 py-3 text-sm leading-7 text-[#1a1a1a] outline-none focus:border-[#EA1D2C]"
       />
       <button
         type="button"
         onClick={publish}
-        className="mt-4 inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase hover:bg-gold-soft"
+        className="mt-3 inline-flex h-12 items-center justify-center rounded-xl bg-[#EA1D2C] px-7 text-[12px] font-semibold tracking-[0.12em] text-white uppercase hover:bg-[#c71826]"
       >
         Publicar comentário
       </button>
-      {notice ? <p className="mt-4 text-sm text-gold-soft">{notice}</p> : null}
+      {notice ? <p className="mt-3 text-sm text-[#FF5A1F]">{notice}</p> : null}
 
-      <ul className="mt-10 space-y-6">
+      <ul className="mt-8 space-y-5">
         {comments.map((item) => (
-          <li key={item.id} className="border-t border-line pt-5">
-            <p className="font-sans text-[10px] tracking-[0.2em] text-gold uppercase">
+          <li key={item.id} className="border-t border-[#eadfdb] pt-4">
+            <p className="text-[11px] font-semibold tracking-[0.14em] text-[#EA1D2C] uppercase">
               {item.author}
             </p>
-            <p className="mt-2 text-sm leading-7 text-foreground/90">{item.text}</p>
+            <p className="mt-2 text-sm leading-6 text-[#3e3e3e]">{item.text}</p>
           </li>
         ))}
       </ul>

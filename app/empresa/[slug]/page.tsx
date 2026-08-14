@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LogoMark } from "@/components/CoverArt";
 import { CoverMedia } from "@/components/CoverMedia";
 import { ContactQr } from "@/components/ContactQr";
 import { DEFAULT_CATALOG } from "@/data/catalog";
@@ -16,9 +15,8 @@ import {
   getPrimaryContactLabel,
   getPrimaryContactUrl,
   getWhatsAppUrl,
-  PLAN_LABEL,
 } from "@/data/businesses";
-import { Reveal } from "../../pontos/reveal";
+import { formatCashbackRate, getCashbackRate } from "@/data/ranking";
 
 type EmpresaPageProps = {
   params: Promise<{ slug: string }>;
@@ -37,7 +35,7 @@ export async function generateMetadata({
 
   if (!business) {
     return {
-      title: "Empresa | Conexão Negócios",
+      title: "Loja | Conexão Negócios",
     };
   }
 
@@ -55,312 +53,198 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
     notFound();
   }
 
-  const planLabel = PLAN_LABEL[business.plan];
   const gallery = business.gallery?.slice(0, 4) ?? [];
-  const isPartner = business.plan === "partner";
   const analytics = getStoreAnalytics(business.slug, 30);
+  const rate = getCashbackRate(business.plan);
+  const contactUrl = business.whatsapp
+    ? getWhatsAppUrl(business.whatsapp)
+    : getPrimaryContactUrl(business);
+  const contactLabel = business.whatsapp
+    ? "Pedir no WhatsApp"
+    : `Abrir ${getPrimaryContactLabel(business)}`;
 
   return (
-    <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden">
-      <noscript>
-        <style>{`.reveal{opacity:1;transform:none}`}</style>
-      </noscript>
-
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(198,166,103,0.08),transparent_55%)]"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] [background-size:72px_72px]"
-      />
-
-      <header className="relative z-10 px-6 pt-10 pb-8 sm:px-10 lg:px-16">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6">
-          <Link
-            href="/"
-            className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase transition-colors duration-300 hover:text-gold-soft"
-          >
-            Conexão Negócios
-          </Link>
+    <div className="relative flex min-h-full flex-1 flex-col bg-[#f5f5f5] text-[#1a1a1a]">
+      <header className="bg-gradient-to-r from-[#EA1D2C] to-[#FF5A1F] px-4 pt-4 pb-16 sm:px-8">
+        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4">
           <Link
             href="/negocios"
-            className="font-sans text-[11px] tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
+            className="text-[13px] font-semibold text-white"
           >
-            Vitrine
+            ← Vitrine
           </Link>
+          <p className="text-[12px] font-medium text-white/90">Marília</p>
         </div>
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col">
-        <section className="px-6 pb-10 sm:px-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <div className="relative overflow-hidden border border-line">
-              <CoverMedia
-                src={business.coverImage}
-                name={business.name}
-                fit={business.coverFit}
-                className="aspect-[16/8] w-full sm:aspect-[21/8]"
-              />
-
-              {business.logo ? (
-                <div className="absolute bottom-0 left-6 translate-y-1/2 sm:left-8">
-                  <LogoMark
-                    name={business.name}
-                    logo={business.logo}
-                    className="h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem]"
-                  />
-                </div>
-              ) : null}
-            </div>
-
-            <div className={business.logo ? "mt-14 sm:mt-16" : "mt-10 sm:mt-12"}>
-              <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
-                Faz parte da Conexão Negócios
-              </p>
-              <p className="mt-3 font-sans text-[10px] tracking-[0.28em] text-gold-soft uppercase">
-                {planLabel}
-              </p>
-
-              <h1 className="mt-6 font-display text-[clamp(2.2rem,6vw,4.4rem)] leading-[0.92] font-medium tracking-[0.04em] text-foreground uppercase">
-                {business.name}
-              </h1>
-
-              <p className="mt-4 font-sans text-[11px] tracking-[0.22em] text-muted uppercase">
+      <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 sm:px-8">
+        <div className="-mt-10 overflow-hidden rounded-2xl bg-white shadow-[0_14px_32px_rgba(0,0,0,0.16)]">
+          <CoverMedia
+            src={business.coverImage}
+            name={business.name}
+            fit={business.coverFit}
+            className="aspect-[16/8] w-full sm:aspect-[21/8]"
+          />
+          <div className="px-5 py-5 sm:px-7 sm:py-6">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="rounded-md bg-[#EA1D2C] px-2.5 py-1 text-[11px] font-semibold text-white">
+                {formatCashbackRate(rate)} de volta
+              </span>
+              <span className="text-[12px] font-medium text-[#FF5A1F] uppercase">
                 {business.category}
-                <span className="mx-3 text-gold/40">·</span>
-                {business.neighborhood}
-              </p>
+              </span>
+            </div>
+            <h1 className="mt-3 text-[1.7rem] leading-tight font-bold text-[#1a1a1a] sm:text-[2.1rem]">
+              {business.name}
+            </h1>
+            <p className="mt-2 text-[14px] text-[#6b6b6b]">
+              {business.neighborhood} · {business.hours}
+            </p>
+            <p className="mt-3 max-w-2xl text-[15px] leading-6 text-[#3e3e3e]">
+              {business.shortDescription}
+            </p>
 
-              <p className="mt-8 max-w-2xl font-display text-2xl leading-snug text-gold-soft sm:text-3xl">
-                {business.shortDescription}
-              </p>
-
-              <p className="mt-8 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-                {business.description}
-              </p>
-
-              {isPartner ? (
-                <p className="mt-8 max-w-xl text-sm leading-7 text-foreground/80">
-                  Esta empresa faz parte da estrutura física da Conexão
-                  Negócios.
-                </p>
+            <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <a
+                href={contactUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-[#EA1D2C] px-6 text-[12px] font-semibold tracking-[0.12em] text-white uppercase transition-colors hover:bg-[#c71826]"
+              >
+                {contactLabel}
+              </a>
+              {business.website ? (
+                <a
+                  href={business.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-12 items-center justify-center rounded-xl border border-[#ffd4c8] bg-white px-6 text-[12px] font-semibold tracking-[0.12em] text-[#EA1D2C] uppercase"
+                >
+                  Site
+                </a>
               ) : null}
+              {business.instagram ? (
+                <a
+                  href={getInstagramUrl(business.instagram)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-12 items-center justify-center rounded-xl border border-[#ffd4c8] bg-white px-6 text-[12px] font-semibold tracking-[0.12em] text-[#EA1D2C] uppercase"
+                >
+                  Instagram
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </div>
 
-              <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                {business.whatsapp ? (
-                  <a
-                    href={getWhatsAppUrl(business.whatsapp)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
-                  >
-                    Falar no WhatsApp
-                  </a>
-                ) : (
-                  <a
-                    href={getPrimaryContactUrl(business)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
-                  >
-                    Abrir {getPrimaryContactLabel(business)}
-                  </a>
-                )}
-                {business.website ? (
-                  <a
-                    href={business.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center justify-center border border-gold/50 px-7 text-[11px] font-medium tracking-[0.22em] text-gold uppercase transition-colors duration-300 hover:border-gold hover:bg-gold/10"
-                  >
-                    Visitar site
-                  </a>
-                ) : null}
-                {business.instagram ? (
-                  <a
-                    href={getInstagramUrl(business.instagram)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center justify-center border border-gold/50 px-7 text-[11px] font-medium tracking-[0.22em] text-gold uppercase transition-colors duration-300 hover:border-gold hover:bg-gold/10"
-                  >
-                    Ver Instagram
-                  </a>
-                ) : null}
-                {business.googleUrl ? (
-                  <a
-                    href={business.googleUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-12 items-center justify-center px-4 text-[11px] font-medium tracking-[0.22em] text-foreground/80 uppercase transition-colors duration-300 hover:text-gold"
-                  >
-                    Google Meu Negócio
-                  </a>
-                ) : null}
-              </div>
+        <section className="mt-6 rounded-2xl bg-white px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7">
+          <h2 className="text-[1.25rem] font-bold text-[#1a1a1a]">Sobre a loja</h2>
+          <p className="mt-3 max-w-2xl text-[15px] leading-7 text-[#6b6b6b]">
+            {business.description}
+          </p>
+          {business.plan === "partner" ? (
+            <p className="mt-4 text-[13px] text-[#FF5A1F]">
+              Esta loja faz parte da estrutura física da Conexão Negócios.
+            </p>
+          ) : null}
+
+          <div className="mt-6 grid gap-5 sm:grid-cols-2">
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
+                Endereço
+              </p>
+              <p className="mt-2 text-[14px] leading-6 text-[#1a1a1a]">
+                {business.address}
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
+                Contato
+              </p>
+              <p className="mt-2 text-[14px] leading-6 text-[#1a1a1a]">
+                {business.phone}
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
+                Horário
+              </p>
+              <p className="mt-2 text-[14px] leading-6 text-[#1a1a1a]">
+                {business.hours}
+              </p>
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
+                Destaques
+              </p>
+              <ul className="mt-2 space-y-1.5 text-[14px] text-[#1a1a1a]">
+                {business.products.map((item) => (
+                  <li key={item}>• {item}</li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
 
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <Reveal>
-              <StoreCatalog
-                slug={business.slug}
-                storeName={business.name}
-                initialItems={DEFAULT_CATALOG[business.slug] ?? []}
-              />
-            </Reveal>
+        <section className="mt-6">
+          <StoreCatalog
+            slug={business.slug}
+            storeName={business.name}
+            initialItems={DEFAULT_CATALOG[business.slug] ?? []}
+          />
+        </section>
+
+        <section className="mt-6">
+          <StoreInsights
+            storeName={business.name}
+            points={analytics}
+            mode="public"
+            tone="light"
+          />
+        </section>
+
+        <section className="mt-6 rounded-2xl bg-white px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7">
+          <h2 className="text-[1.25rem] font-bold text-[#1a1a1a]">
+            Peça agora
+          </h2>
+          <p className="mt-2 text-[14px] leading-6 text-[#6b6b6b]">
+            Escaneie o QR Code ou fale direto com a loja.
+          </p>
+          <div className="mt-5">
+            <ContactQr business={business} />
           </div>
         </section>
 
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <Reveal>
-              <StoreInsights
-                storeName={business.name}
-                points={analytics}
-                mode="public"
-              />
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto grid w-full max-w-5xl gap-12 sm:grid-cols-2 sm:gap-16">
-            <Reveal>
-              <div>
-                <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
-                  Endereço
-                </p>
-                <p className="mt-4 text-base leading-8 text-foreground/90">
-                  {business.address}
-                </p>
-                <p className="mt-2 text-sm leading-7 text-muted">
-                  {business.neighborhood}
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={80}>
-              <div>
-                <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
-                  Contato
-                </p>
-                <p className="mt-4 text-base leading-8 text-foreground/90">
-                  {business.phone}
-                </p>
-                {business.instagram ? (
-                  <p className="mt-2 text-sm leading-7 text-muted">
-                    Instagram · @{business.instagram.replace(/^@/, "")}
-                  </p>
-                ) : business.website ? (
-                  <p className="mt-2 text-sm leading-7 text-muted">
-                    Site · {business.website.replace(/^https?:\/\//, "")}
-                  </p>
-                ) : null}
-              </div>
-            </Reveal>
-
-            <Reveal delay={120}>
-              <div>
-                <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
-                  Horário de funcionamento
-                </p>
-                <p className="mt-4 text-base leading-8 text-foreground/90">
-                  {business.hours}
-                </p>
-              </div>
-            </Reveal>
-
-            <Reveal delay={160}>
-              <div>
-                <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
-                  Produtos ou serviços
-                </p>
-                <ul className="mt-4 space-y-3">
-                  {business.products.map((item) => (
-                    <li
-                      key={item}
-                      className="flex gap-3 text-base leading-7 text-foreground/90"
-                    >
-                      <span
-                        className="mt-3.5 h-px w-4 shrink-0 bg-gold/60"
-                        aria-hidden
-                      />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <Reveal>
-              <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
-                Conecte agora
-              </p>
-              <h2 className="mt-6 max-w-xl font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-tight font-medium text-foreground">
-                Serviços, produtos e contato direto.
-              </h2>
-            </Reveal>
-
-            <Reveal delay={80} className="mt-12">
-              <ContactQr business={business} />
-            </Reveal>
-          </div>
-        </section>
-
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <Reveal>
-              <StoreComments business={business} />
-            </Reveal>
-          </div>
+        <section className="mt-6">
+          <StoreComments business={business} />
         </section>
 
         {gallery.length > 0 ? (
-        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <Reveal>
-              <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
-                Galeria
-              </p>
-            </Reveal>
-
-            <div className="mt-10 grid grid-cols-2 gap-3">
-              {gallery.map((item, index) => (
-                <Reveal key={item} delay={index * 70}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={item}
-                    alt=""
-                    className="aspect-[4/3] w-full object-cover"
-                  />
-                </Reveal>
+          <section className="mt-6 mb-4">
+            <h2 className="px-1 text-[1.25rem] font-bold text-[#1a1a1a]">
+              Galeria
+            </h2>
+            <div className="mt-4 grid grid-cols-2 gap-3">
+              {gallery.map((item) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  key={item}
+                  src={item}
+                  alt=""
+                  className="aspect-[4/3] w-full rounded-2xl object-cover shadow-[0_10px_24px_rgba(0,0,0,0.12)]"
+                />
               ))}
             </div>
-          </div>
-        </section>
-        ) : null}
+          </section>
+        ) : (
+          <div className="h-4" />
+        )}
       </main>
 
-      <footer className="relative z-10 border-t border-line px-6 py-16 sm:px-10 lg:px-16">
-        <div className="mx-auto max-w-xl text-center">
-          <p className="text-[11px] tracking-[0.28em] text-gold uppercase">
-            Conexão Negócios
-          </p>
-          <p className="mt-6 text-base leading-8 text-muted">
-            Empresas locais.
-            <br />
-            Consumidores locais.
-            <br />
-            Novas conexões.
-          </p>
-        </div>
+      <footer className="px-4 py-8 sm:px-8">
+        <p className="text-center text-[12px] text-[#8a8a8a]">
+          Conexão Negócios · Lojas locais · Marília
+        </p>
       </footer>
     </div>
   );

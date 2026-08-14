@@ -15,25 +15,25 @@ export function ContactQr({ business }: ContactQrProps) {
   const src = getQrCodeImageUrl(url);
 
   return (
-    <div className="flex flex-col items-start gap-6 border border-line bg-surface/70 px-6 py-8 sm:flex-row sm:items-center sm:gap-10 sm:px-8">
-      <div className="border border-gold/35 bg-background p-3">
+    <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:gap-8">
+      <div className="rounded-2xl bg-[#f5f5f5] p-3 shadow-[0_8px_20px_rgba(0,0,0,0.08)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={src}
           alt={`QR Code para ${label} da ${business.name}`}
           width={168}
           height={168}
-          className="h-[168px] w-[168px] bg-background"
+          className="h-[168px] w-[168px] rounded-xl bg-white"
         />
       </div>
       <div className="max-w-sm">
-        <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
+        <p className="text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase">
           Aproxime a câmera
         </p>
-        <p className="mt-4 font-display text-2xl leading-tight tracking-[0.04em] text-foreground uppercase">
+        <p className="mt-2 text-[1.2rem] font-bold text-[#1a1a1a]">
           QR Code · {label}
         </p>
-        <p className="mt-4 text-sm leading-7 text-muted">
+        <p className="mt-2 text-[14px] leading-6 text-[#6b6b6b]">
           Escaneie para abrir o {label.toLowerCase()} de {business.name} no
           celular.
         </p>

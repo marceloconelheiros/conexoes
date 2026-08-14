@@ -13,7 +13,7 @@ export default async function NegociosPage() {
   const businesses = await getBusinesses();
 
   return (
-    <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden bg-[#f5f5f5] text-[#1a1a1a]">
+    <div className="relative flex min-h-full flex-1 flex-col bg-[#f5f5f5] text-[#1a1a1a]">
       <header className="bg-gradient-to-r from-[#EA1D2C] to-[#FF5A1F] px-4 pt-4 pb-8 sm:px-8">
         <div className="mx-auto w-full max-w-5xl">
           <div className="flex items-center justify-between gap-4">

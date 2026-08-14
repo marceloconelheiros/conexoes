@@ -17,7 +17,7 @@ export function BusinessCard({ business }: BusinessCardProps) {
   return (
     <Link
       href={profileHref}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)] transition-transform duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA1D2C] hover:-translate-y-0.5"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_14px_32px_rgba(0,0,0,0.16),0_4px_10px_rgba(0,0,0,0.08)] transition-[transform,box-shadow] duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#EA1D2C] hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.2),0_8px_16px_rgba(0,0,0,0.1)]"
     >
       <div className="relative overflow-hidden">
         <CoverMedia

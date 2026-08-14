@@ -52,7 +52,7 @@ export function BusinessDirectory({ businesses }: BusinessDirectoryProps) {
             </p>
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-5 pt-1 sm:grid-cols-2 sm:gap-6">
             {results.map((business) => (
               <BusinessCard key={business.id} business={business} />
             ))}

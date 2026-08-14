@@ -15,6 +15,7 @@ type StoreInsightsProps = {
   storeName: string;
   points: DayPoint[];
   mode?: "public" | "owner";
+  tone?: "dark" | "light";
 };
 
 const seriesMeta: { key: SeriesKey; label: string; color: string }[] = [
@@ -40,8 +41,10 @@ export function StoreInsights({
   storeName,
   points,
   mode = "public",
+  tone = "dark",
 }: StoreInsightsProps) {
   const owner = mode === "owner";
+  const light = tone === "light";
   const [period, setPeriod] = useState<AnalyticsPeriod>(owner ? 15 : 7);
   const [source, setSource] = useState<AnalyticsSource>("todos");
   const [visible, setVisible] = useState<Record<SeriesKey, boolean>>({
@@ -57,16 +60,40 @@ export function StoreInsights({
   const totals = useMemo(() => summarizeAnalytics(filtered), [filtered]);
 
   return (
-    <div className="border border-line bg-surface/70 px-5 py-7 sm:px-8 sm:py-8">
+    <div
+      className={
+        light
+          ? "rounded-2xl bg-white px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.12)] sm:px-7"
+          : "border border-line bg-surface/70 px-5 py-7 sm:px-8 sm:py-8"
+      }
+    >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
+          <p
+            className={
+              light
+                ? "text-[11px] font-semibold tracking-[0.16em] text-[#EA1D2C] uppercase"
+                : "font-sans text-[10px] tracking-[0.28em] text-gold uppercase"
+            }
+          >
             {owner ? "Painel da empresa" : "Movimento nesta loja"}
           </p>
-          <h2 className="mt-3 font-display text-[1.7rem] leading-tight tracking-[0.04em] text-foreground uppercase sm:text-[2rem]">
+          <h2
+            className={
+              light
+                ? "mt-2 text-[1.35rem] font-bold text-[#1a1a1a]"
+                : "mt-3 font-display text-[1.7rem] leading-tight tracking-[0.04em] text-foreground uppercase sm:text-[2rem]"
+            }
+          >
             {owner ? "Interações e cliques" : "Visitas e cliques"}
           </h2>
-          <p className="mt-3 max-w-md text-sm leading-7 text-muted">
+          <p
+            className={
+              light
+                ? "mt-2 max-w-md text-[14px] leading-6 text-[#6b6b6b]"
+                : "mt-3 max-w-md text-sm leading-7 text-muted"
+            }
+          >
             {owner
               ? "Filtre o período e a origem para acompanhar visitas, cliques e interações da sua loja na rede."
               : `Visitas, cliques e interações geradas pela Conexão Negócios em ${storeName}.`}
@@ -74,7 +101,7 @@ export function StoreInsights({
         </div>
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-2">
+      <div className="mt-6 flex flex-wrap gap-2">
         {periods.map((item) => (
           <button
             key={item.value}
@@ -82,8 +109,12 @@ export function StoreInsights({
             onClick={() => setPeriod(item.value)}
             className={`h-9 px-4 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors duration-300 ${
               period === item.value
-                ? "border border-gold bg-gold/[0.08] text-gold-soft"
-                : "border border-line text-muted hover:border-gold/45 hover:text-foreground"
+                ? light
+                  ? "rounded-full bg-[#EA1D2C] text-white"
+                  : "border border-gold bg-gold/[0.08] text-gold-soft"
+                : light
+                  ? "rounded-full bg-[#f5f5f5] text-[#6b6b6b]"
+                  : "border border-line text-muted hover:border-gold/45 hover:text-foreground"
             }`}
           >
             {item.label}
@@ -110,19 +141,26 @@ export function StoreInsights({
         </div>
       ) : null}
 
-      <div className="mt-8 grid grid-cols-3 gap-3">
-        <MetricCard label="Visitas" value={totals.views} />
-        <MetricCard label="Cliques" value={totals.clicks} />
-        <MetricCard label="Interações" value={totals.interactions} />
+      <div className="mt-6 grid grid-cols-3 gap-3">
+        <MetricCard label="Visitas" value={totals.views} light={light} />
+        <MetricCard label="Cliques" value={totals.clicks} light={light} />
+        <MetricCard label="Interações" value={totals.interactions} light={light} />
       </div>
 
-      <div className="mt-8">
-        <LineChart points={filtered} visible={visible} />
+      <div className="mt-6">
+        <LineChart points={filtered} visible={visible} light={light} />
       </div>
 
       <div className="mt-5 flex flex-wrap gap-4">
         {seriesMeta.map((item) => {
           if (!owner && item.key === "interactions") return null;
+          const color = light
+            ? item.key === "views"
+              ? "#EA1D2C"
+              : item.key === "clicks"
+                ? "#FF5A1F"
+                : "#9a9a9a"
+            : item.color;
 
           return (
             <button
@@ -135,14 +173,18 @@ export function StoreInsights({
                 }))
               }
               className={`flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase ${
-                visible[item.key] ? "text-foreground" : "text-muted"
+                visible[item.key]
+                  ? light
+                    ? "text-[#1a1a1a]"
+                    : "text-foreground"
+                  : "text-[#8a8a8a]"
               }`}
             >
               <span
                 className="h-2 w-2"
                 style={{
-                  background: visible[item.key] ? item.color : "transparent",
-                  outline: `1px solid ${item.color}`,
+                  background: visible[item.key] ? color : "transparent",
+                  outline: `1px solid ${color}`,
                 }}
               />
               {item.label}
@@ -154,13 +196,39 @@ export function StoreInsights({
   );
 }
 
-function MetricCard({ label, value }: { label: string; value: number }) {
+function MetricCard({
+  label,
+  value,
+  light = false,
+}: {
+  label: string;
+  value: number;
+  light?: boolean;
+}) {
   return (
-    <div className="border border-line bg-background/50 px-3 py-4 sm:px-4">
-      <p className="font-sans text-[9px] tracking-[0.2em] text-muted uppercase">
+    <div
+      className={
+        light
+          ? "rounded-xl bg-[#f5f5f5] px-3 py-4 sm:px-4"
+          : "border border-line bg-background/50 px-3 py-4 sm:px-4"
+      }
+    >
+      <p
+        className={
+          light
+            ? "text-[9px] font-semibold tracking-[0.16em] text-[#8a8a8a] uppercase"
+            : "font-sans text-[9px] tracking-[0.2em] text-muted uppercase"
+        }
+      >
         {label}
       </p>
-      <p className="mt-2 font-display text-2xl leading-none text-foreground sm:text-3xl">
+      <p
+        className={
+          light
+            ? "mt-2 text-2xl leading-none font-bold text-[#1a1a1a] sm:text-3xl"
+            : "mt-2 font-display text-2xl leading-none text-foreground sm:text-3xl"
+        }
+      >
         {value}
       </p>
     </div>
@@ -170,9 +238,11 @@ function MetricCard({ label, value }: { label: string; value: number }) {
 function LineChart({
   points,
   visible,
+  light = false,
 }: {
   points: DayPoint[];
   visible: Record<SeriesKey, boolean>;
+  light?: boolean;
 }) {
   const width = 640;
   const height = 220;
@@ -217,7 +287,7 @@ function LineChart({
           x2={width - pad.r}
           y1={pad.t + innerH * (1 - line)}
           y2={pad.t + innerH * (1 - line)}
-          stroke="rgba(198,166,103,0.16)"
+          stroke={light ? "rgba(0,0,0,0.08)" : "rgba(198,166,103,0.16)"}
           strokeWidth="1"
         />
       ))}
@@ -228,7 +298,15 @@ function LineChart({
             key={item.key}
             d={toPath(item.key)}
             fill="none"
-            stroke={item.color}
+            stroke={
+              light
+                ? item.key === "views"
+                  ? "#EA1D2C"
+                  : item.key === "clicks"
+                    ? "#FF5A1F"
+                    : "#9a9a9a"
+                : item.color
+            }
             strokeWidth="1.8"
             strokeLinejoin="round"
             strokeLinecap="round"
