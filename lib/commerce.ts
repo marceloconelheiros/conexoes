@@ -1,6 +1,8 @@
 import { DEFAULT_CATALOG, type CatalogItem, money } from "@/data/catalog";
 import type { Business } from "@/data/businesses";
 import { cashbackCents, getCashbackRate } from "@/data/ranking";
+import { formatCep } from "@/lib/cep";
+import { formatPhone, upsertCustomer } from "@/lib/customers";
 
 const KEYS = {
   catalog: "conexao-catalog",
@@ -20,7 +22,26 @@ export type CartLine = CatalogItem & {
 export type ShopUser = {
   name: string;
   phone: string;
+  cep: string;
+  number: string;
+  street: string;
+  neighborhood: string;
+  city: string;
+  state: string;
 };
+
+export function isCompleteShopUser(user: ShopUser | null): user is ShopUser {
+  if (!user) return false;
+  return (
+    (user.name ?? "").trim().length > 1 &&
+    (user.phone ?? "").replace(/\D/g, "").length >= 10 &&
+    (user.cep ?? "").replace(/\D/g, "").length === 8 &&
+    (user.number ?? "").trim().length > 0 &&
+    (user.street ?? "").trim().length > 0 &&
+    (user.neighborhood ?? "").trim().length > 0 &&
+    (user.city ?? "").trim().length > 0
+  );
+}
 
 export type ShopOrder = {
   id: string;
@@ -113,7 +134,30 @@ export function getShopUser(): ShopUser | null {
 }
 
 export function saveShopUser(user: ShopUser) {
-  writeJson(KEYS.user, user);
+  writeJson(KEYS.user, {
+    ...user,
+    phone: user.phone.replace(/\D/g, ""),
+    cep: formatCep(user.cep),
+  });
+}
+
+export function registerCustomerForStore(
+  user: ShopUser,
+  store: { slug: string; name: string },
+) {
+  return upsertCustomer(
+    {
+      name: user.name.trim(),
+      phone: user.phone.replace(/\D/g, ""),
+      cep: formatCep(user.cep),
+      number: user.number.trim(),
+      street: user.street.trim(),
+      neighborhood: user.neighborhood.trim(),
+      city: user.city.trim(),
+      state: user.state.trim() || "SP",
+    },
+    store,
+  );
 }
 
 export function getOrders(): ShopOrder[] {
@@ -167,7 +211,10 @@ export function buildWhatsAppOrder(
     `Pedido Conexão Negócios`,
     `Loja: ${business.name}`,
     `Cliente: ${user.name}`,
-    `WhatsApp: ${user.phone}`,
+    `WhatsApp: ${formatPhone(user.phone)}`,
+    `Endereço: ${user.street}, ${user.number} — ${user.neighborhood}`,
+    `Cidade: ${user.city}${user.state ? ` - ${user.state}` : ""}`,
+    `CEP: ${formatCep(user.cep)}`,
     "",
     ...cart.map(
       (item) =>

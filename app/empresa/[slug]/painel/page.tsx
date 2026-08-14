@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { OwnerCatalog } from "@/components/OwnerCatalog";
 import { StoreInsights } from "@/components/StoreInsights";
+import { CustomerTable } from "@/components/CustomerTable";
 import { getStoreAnalytics } from "@/data/analytics";
 import { getBusinessBySlug, getBusinesses } from "@/data/businesses";
 import {
@@ -56,24 +57,32 @@ export default async function EmpresaPainelPage({ params }: PainelPageProps) {
       />
 
       <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-6">
+        <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6">
           <Link
             href="/"
             className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase transition-colors duration-300 hover:text-gold-soft"
           >
             Conexão Negócios
           </Link>
-          <Link
-            href={`/empresa/${business.slug}`}
-            className="font-sans text-[11px] tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
-          >
-            Ver vitrine
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link
+              href={`/empresa/${business.slug}`}
+              className="font-sans text-[11px] tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
+            >
+              Ver vitrine
+            </Link>
+            <Link
+              href="/admin"
+              className="font-sans text-[11px] tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
+            >
+              Admin geral
+            </Link>
+          </div>
         </div>
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col px-6 pb-10 sm:px-10 lg:px-16">
-        <div className="mx-auto w-full max-w-5xl">
+        <div className="mx-auto w-full max-w-6xl">
           <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
             Área do anunciante
           </p>
@@ -119,6 +128,14 @@ export default async function EmpresaPainelPage({ params }: PainelPageProps) {
                 Sobe com anúncio, movimento e cashback.
               </p>
             </div>
+          </div>
+
+          <div className="mt-12">
+            <CustomerTable
+              mode="store"
+              storeSlug={business.slug}
+              storeName={business.name}
+            />
           </div>
 
           <div className="mt-12">

@@ -4,30 +4,49 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { Business } from "@/data/businesses";
 import { money } from "@/data/catalog";
+import { digitsOnly, formatCep, isCompleteCep, lookupCep } from "@/lib/cep";
 import {
   buildWhatsAppOrder,
   cartTotal,
   clearCart,
   getCart,
   getShopUser,
+  isCompleteShopUser,
+  registerCustomerForStore,
   saveOrder,
   saveShopUser,
   setCartQty,
   type CartLine,
   type ShopUser,
 } from "@/lib/commerce";
+import { formatPhone } from "@/lib/customers";
+
+const emptyUser: ShopUser = {
+  name: "",
+  phone: "",
+  cep: "",
+  number: "",
+  street: "",
+  neighborhood: "",
+  city: "",
+  state: "",
+};
 
 export function Checkout({ businesses }: { businesses: Business[] }) {
   const [cart, setCart] = useState<CartLine[]>([]);
-  const [storedUser, setStoredUser] = useState<ShopUser | null>(null);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [form, setForm] = useState<ShopUser>(emptyUser);
+  const [editing, setEditing] = useState(true);
+  const [cepStatus, setCepStatus] = useState("");
   const [notice, setNotice] = useState("");
 
   useEffect(() => {
     const sync = () => {
       setCart(getCart());
-      setStoredUser(getShopUser());
+      const stored = getShopUser();
+      if (stored) {
+        setForm({ ...emptyUser, ...stored });
+        setEditing(!isCompleteShopUser(stored));
+      }
     };
     sync();
     window.addEventListener("conexao-commerce", sync);
@@ -39,17 +58,54 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
     [businesses, cart],
   );
   const total = cartTotal(cart);
+  const complete = isCompleteShopUser(form);
+
+  function patch(next: Partial<ShopUser>) {
+    setForm((current) => ({ ...current, ...next }));
+  }
+
+  async function onCepChange(value: string) {
+    const cep = formatCep(value);
+    patch({ cep });
+    setCepStatus("");
+
+    if (!isCompleteCep(cep)) return;
+
+    setCepStatus("Buscando endereço...");
+    const address = await lookupCep(cep);
+    if (!address) {
+      setCepStatus("CEP não encontrado. Preencha rua, bairro e cidade.");
+      return;
+    }
+
+    setForm((current) => {
+      if (digitsOnly(current.cep) !== digitsOnly(cep)) return current;
+      return {
+        ...current,
+        cep: formatCep(address.cep),
+        street: address.street,
+        neighborhood: address.neighborhood,
+        city: address.city,
+        state: address.state,
+      };
+    });
+    setCepStatus(
+      address.street
+        ? "Endereço preenchido pelo CEP."
+        : "Cidade encontrada. Complete a rua se precisar.",
+    );
+  }
 
   function sendOrder() {
-    const client =
-      storedUser ?? { name: name.trim(), phone: phone.replace(/\D/g, "") };
-    if (!client.name || client.phone.length < 10) {
-      setNotice("Preencha nome e WhatsApp para contabilizar o pedido.");
+    if (!complete) {
+      setNotice("Preencha nome, WhatsApp, CEP e número da casa.");
+      setEditing(true);
       return;
     }
     if (!store || cart.length === 0) return;
 
-    saveShopUser({ name: client.name, phone: client.phone });
+    saveShopUser(form);
+    registerCustomerForStore(form, { slug: store.slug, name: store.name });
     saveOrder({
       id: `p-${Date.now()}`,
       storeSlug: store.slug,
@@ -63,13 +119,14 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
       at: new Date().toISOString(),
     });
 
-    const url = buildWhatsAppOrder(store, client, cart);
+    const url = buildWhatsAppOrder(store, form, cart);
     clearCart();
+    setEditing(false);
     if (url) {
       window.open(url, "_blank", "noopener,noreferrer");
     }
     setNotice(
-      "Pedido enviado. A loja segue o pagamento no WhatsApp. Comente na página da loja para liberar o cashback.",
+      "Pedido enviado. Você já aparece na lista de clientes da loja. Comente na página para liberar o cashback.",
     );
   }
 
@@ -94,7 +151,7 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
   }
 
   return (
-    <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_24rem]">
       <div>
         <p className="font-sans text-[11px] tracking-[0.28em] text-gold uppercase">
           {cart[0]?.storeName}
@@ -134,29 +191,97 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
 
       <aside className="border border-line bg-surface/70 px-5 py-6">
         <p className="font-sans text-[10px] tracking-[0.22em] text-gold uppercase">
-          Cadastro simples
+          Cadastro do cliente
         </p>
-        {storedUser ? (
-          <p className="mt-4 text-sm leading-7 text-muted">
-            {storedUser.name}
-            <br />
-            {storedUser.phone}
-          </p>
+
+        {!editing && complete ? (
+          <div className="mt-4 text-sm leading-7 text-muted">
+            <p className="text-foreground">{form.name}</p>
+            <p>{formatPhone(form.phone)}</p>
+            <p>
+              {form.street}, {form.number}
+            </p>
+            <p>
+              {form.neighborhood} · {form.city}
+              {form.state ? ` - ${form.state}` : ""}
+            </p>
+            <p>CEP {formatCep(form.cep)}</p>
+            <button
+              type="button"
+              onClick={() => setEditing(true)}
+              className="mt-3 text-[10px] tracking-[0.18em] text-gold uppercase hover:text-gold-soft"
+            >
+              Alterar cadastro
+            </button>
+          </div>
         ) : (
           <div className="mt-4 space-y-3">
             <input
-              value={name}
-              onChange={(event) => setName(event.target.value)}
+              value={form.name}
+              onChange={(event) => patch({ name: event.target.value })}
               placeholder="Seu nome"
+              autoComplete="name"
               className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
             />
             <input
-              value={phone}
-              onChange={(event) => setPhone(event.target.value)}
+              value={formatPhone(form.phone)}
+              onChange={(event) => patch({ phone: event.target.value })}
               placeholder="WhatsApp"
               inputMode="tel"
+              autoComplete="tel"
               className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
             />
+            <div className="grid grid-cols-[1fr_5.5rem] gap-3">
+              <input
+                value={form.cep}
+                onChange={(event) => void onCepChange(event.target.value)}
+                placeholder="CEP"
+                inputMode="numeric"
+                autoComplete="postal-code"
+                className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+              />
+              <input
+                value={form.number}
+                onChange={(event) => patch({ number: event.target.value })}
+                placeholder="Nº"
+                inputMode="numeric"
+                autoComplete="address-line2"
+                className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+              />
+            </div>
+            <input
+              value={form.street}
+              onChange={(event) => patch({ street: event.target.value })}
+              placeholder="Rua"
+              autoComplete="address-line1"
+              className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+            />
+            <div className="grid grid-cols-2 gap-3">
+              <input
+                value={form.neighborhood}
+                onChange={(event) =>
+                  patch({ neighborhood: event.target.value })
+                }
+                placeholder="Bairro"
+                autoComplete="address-level3"
+                className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+              />
+              <input
+                value={form.city}
+                onChange={(event) => patch({ city: event.target.value })}
+                placeholder="Cidade"
+                autoComplete="address-level2"
+                className="h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+              />
+            </div>
+            {cepStatus ? (
+              <p className="text-xs leading-5 text-gold-soft">{cepStatus}</p>
+            ) : (
+              <p className="text-xs leading-5 text-muted">
+                O CEP preenche rua, bairro e cidade para a loja e para o
+                marketing da rede.
+              </p>
+            )}
           </div>
         )}
 
