@@ -24,7 +24,10 @@ const items: NavItem[] = [
   {
     href: "/negocios",
     label: "Rede",
-    match: (path) => path.startsWith("/negocios") || path.startsWith("/empresa"),
+    match: (path) =>
+      path.startsWith("/negocios") ||
+      path.startsWith("/empresa") ||
+      path.startsWith("/carrinho"),
     icon: (active) => <GridIcon active={active} />,
   },
   {

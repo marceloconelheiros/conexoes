@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { LogoMark } from "@/components/CoverArt";
 import { CoverMedia } from "@/components/CoverMedia";
 import { ContactQr } from "@/components/ContactQr";
+import { DEFAULT_CATALOG } from "@/data/catalog";
+import { StoreComments } from "@/components/StoreComments";
 import { StoreInsights } from "@/components/StoreInsights";
 import { getStoreAnalytics } from "@/data/analytics";
 import {
@@ -208,6 +210,18 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
         <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <Reveal>
+              <StoreCatalog
+                slug={business.slug}
+                storeName={business.name}
+                initialItems={DEFAULT_CATALOG[business.slug] ?? []}
+              />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
+          <div className="mx-auto w-full max-w-5xl">
+            <Reveal>
               <StoreInsights
                 storeName={business.name}
                 points={analytics}
@@ -301,6 +315,14 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
 
             <Reveal delay={80} className="mt-12">
               <ContactQr business={business} />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
+          <div className="mx-auto w-full max-w-5xl">
+            <Reveal>
+              <StoreComments business={business} />
             </Reveal>
           </div>
         </section>

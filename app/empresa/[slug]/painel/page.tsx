@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { OwnerCatalog } from "@/components/OwnerCatalog";
 import { StoreInsights } from "@/components/StoreInsights";
 import { getStoreAnalytics } from "@/data/analytics";
 import { getBusinessBySlug, getBusinesses } from "@/data/businesses";
+import {
+  CLASS_LABEL,
+  formatCashbackRate,
+  getCashbackRate,
+  getCashierCode,
+  getStoreClass,
+} from "@/data/ranking";
 
 type PainelPageProps = {
   params: Promise<{ slug: string }>;
@@ -36,6 +44,9 @@ export default async function EmpresaPainelPage({ params }: PainelPageProps) {
   }
 
   const points = getStoreAnalytics(business.slug, 30);
+  const cashierCode = getCashierCode(business.slug);
+  const rate = getCashbackRate(business.plan);
+  const storeClass = getStoreClass(0, business.plan);
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden">
@@ -70,9 +81,49 @@ export default async function EmpresaPainelPage({ params }: PainelPageProps) {
             {business.name}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-8 text-muted">
-            Acompanhe o que a rede gera para esta loja. Os números são de
-            demonstração até a conexão com o painel real.
+            A venda continua no seu caixa. O app só confirma a compra com o
+            código do dia e gera o cashback da loja.
           </p>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-3">
+            <div className="border border-gold/35 bg-surface/70 px-5 py-6">
+              <p className="font-sans text-[10px] tracking-[0.22em] text-gold uppercase">
+                Código do caixa hoje
+              </p>
+              <p className="mt-4 font-display text-3xl tracking-[0.12em] text-foreground">
+                {cashierCode}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                Passe este código depois do pagamento.
+              </p>
+            </div>
+            <div className="border border-line bg-surface/70 px-5 py-6">
+              <p className="font-sans text-[10px] tracking-[0.22em] text-gold uppercase">
+                Cashback da loja
+              </p>
+              <p className="mt-4 font-display text-3xl text-foreground">
+                {formatCashbackRate(rate)}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                Percentual que a loja devolve em crédito.
+              </p>
+            </div>
+            <div className="border border-line bg-surface/70 px-5 py-6">
+              <p className="font-sans text-[10px] tracking-[0.22em] text-gold uppercase">
+                Classificação
+              </p>
+              <p className="mt-4 font-display text-3xl text-foreground">
+                {CLASS_LABEL[storeClass]}
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted">
+                Sobe com anúncio, movimento e cashback.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <OwnerCatalog slug={business.slug} />
+          </div>
 
           <div className="mt-12">
             <StoreInsights

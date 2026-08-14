@@ -1,33 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { RewardsWallet } from "@/components/RewardsWallet";
+import { StoreRanking } from "@/components/StoreRanking";
+import { getBusinesses } from "@/data/businesses";
+import { rankStores } from "@/data/ranking";
 import { Reveal } from "../pontos/reveal";
 
 export const metadata: Metadata = {
-  title: "Pontos Conexão | Conexão Negócios",
+  title: "Cashback | Conexão Negócios",
   description:
-    "Ganhe pontos por presença e interação na rede. Troque benefícios nas empresas anunciantes — sem comissão sobre vendas.",
+    "Compre na loja, valide no caixa e receba cashback. As lojas são classificadas na rede. Sem venda pelo app e sem comissão.",
 };
 
 const steps = [
   {
     n: "01",
-    title: "Presença",
-    text: "A pessoa passa na tela, abre o app ou visita o perfil da empresa.",
+    title: "Compra na loja",
+    text: "PIX, cartão ou dinheiro — do jeito que a casa já recebe. O app não vende e não recebe o pagamento.",
   },
   {
     n: "02",
-    title: "Pontos",
-    text: "Cada interação vira Pontos Conexão. Não depende do valor da compra.",
+    title: "Código do caixa",
+    text: "O anunciante confirma a compra com o código do dia. Assim o cashback só sai depois de uma venda real.",
   },
   {
     n: "03",
-    title: "Retorno",
-    text: "O benefício é resgatado na própria empresa anunciante, que já paga a mídia.",
+    title: "Cashback da loja",
+    text: "A empresa gera o crédito. A classificação sobe com anúncio, movimento e cashback oferecido.",
   },
 ];
 
-export default function RecompensasPage() {
+export default async function RecompensasPage() {
+  const ranked = rankStores(await getBusinesses());
+
   return (
     <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden">
       <div
@@ -54,23 +59,23 @@ export default function RecompensasPage() {
         <section className="px-6 pb-10 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
-              Recompensas
+              Cashback da rede
             </p>
             <h1 className="mt-8 font-display text-[clamp(2.1rem,6.4vw,4.8rem)] leading-[0.92] font-medium tracking-[0.04em] text-foreground uppercase">
-              Pontos por
+              A loja vende.
               <br />
-              presença.
+              O app só
               <br />
-              <span className="text-gold">Não por venda.</span>
+              <span className="text-gold">confirma.</span>
             </h1>
             <p className="mt-10 max-w-xl font-display text-2xl leading-snug text-gold-soft sm:text-3xl">
-              A Conexão Negócios ganha nos anúncios. A cidade ganha motivo para
-              voltar.
+              Sem checkout. Sem comissão. Cashback gerado pela loja depois da
+              compra no caixa.
             </p>
             <p className="mt-8 max-w-lg text-base leading-8 text-muted sm:text-lg">
-              Quem anuncia na rede oferece um benefício em pontos. Quem usa o
-              app acumula ao circular pela cidade, ver as telas e conhecer os
-              negócios. Nenhuma venda passa pela nossa comissão.
+              A Conexão Negócios classifica as empresas e ganha nos anúncios.
+              Quanto mais a loja anuncia, move a rede e devolve cashback, mais
+              alto ela sobe no ranking.
             </p>
           </div>
         </section>
@@ -94,7 +99,24 @@ export default function RecompensasPage() {
         <section className="border-t border-line px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <Reveal>
-              <RewardsWallet />
+              <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
+                Classificação das lojas
+              </p>
+              <h2 className="mt-6 max-w-xl font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-tight font-medium text-foreground">
+                Ouro, prata e bronze — pelo anúncio, pelo movimento e pelo
+                cashback.
+              </h2>
+            </Reveal>
+            <Reveal delay={80} className="mt-10">
+              <StoreRanking stores={ranked} />
+            </Reveal>
+          </div>
+        </section>
+
+        <section className="border-t border-line px-6 py-16 sm:px-10 sm:py-20 lg:px-16">
+          <div className="mx-auto w-full max-w-5xl">
+            <Reveal>
+              <RewardsWallet stores={ranked} />
             </Reveal>
           </div>
         </section>
