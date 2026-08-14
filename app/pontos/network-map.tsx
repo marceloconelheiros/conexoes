@@ -27,7 +27,7 @@ export function NetworkMap() {
   const inner = places.map((_, index) => point(index, 14));
 
   return (
-    <Reveal className="network-stage mt-16 sm:mt-20">
+    <Reveal className="network-stage mt-6 sm:mt-8">
       <div className="relative mx-auto hidden aspect-square w-full max-w-[720px] lg:block">
         <svg
           viewBox="0 0 100 100"

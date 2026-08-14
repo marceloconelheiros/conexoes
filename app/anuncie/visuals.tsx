@@ -313,14 +313,17 @@ export function GrowthPath() {
       <ol className="hidden items-stretch sm:flex">
         {growth.map((step, index) => (
           <li key={step.name} className="flex flex-1 items-stretch">
-            <div className="flex flex-1 flex-col items-center justify-center border border-line bg-surface/70 px-4 py-8 text-center">
+            <a
+              href={`#plano-${step.name.toLowerCase()}`}
+              className="flex flex-1 flex-col items-center justify-center border border-line bg-surface/70 px-4 py-8 text-center transition-colors duration-300 hover:border-gold/55 hover:bg-gold/[0.06]"
+            >
               <span className="font-display text-3xl tracking-[0.08em] text-foreground uppercase">
                 {step.name}
               </span>
               <span className="mt-3 font-sans text-[11px] tracking-[0.22em] text-gold uppercase">
                 {step.screens}
               </span>
-            </div>
+            </a>
             {index < growth.length - 1 ? (
               <div
                 className="flex w-10 items-center justify-center text-gold/70"
@@ -336,14 +339,17 @@ export function GrowthPath() {
       <ol className="flex flex-col sm:hidden">
         {growth.map((step, index) => (
           <li key={step.name} className="flex flex-col items-center">
-            <div className="w-full border border-line bg-surface/70 px-6 py-8 text-center">
+            <a
+              href={`#plano-${step.name.toLowerCase()}`}
+              className="w-full border border-line bg-surface/70 px-6 py-8 text-center transition-colors duration-300 hover:border-gold/55 hover:bg-gold/[0.06]"
+            >
               <span className="font-display text-3xl tracking-[0.08em] text-foreground uppercase">
                 {step.name}
               </span>
               <span className="mt-3 block font-sans text-[11px] tracking-[0.22em] text-gold uppercase">
                 {step.screens}
               </span>
-            </div>
+            </a>
             {index < growth.length - 1 ? (
               <div className="flex flex-col items-center py-3" aria-hidden>
                 <span className="h-7 w-px bg-gold/45" />

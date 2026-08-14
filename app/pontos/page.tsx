@@ -89,10 +89,12 @@ function Section({
   className?: string;
   id?: string;
 }) {
+  const hasYPadding = /\b(py-|pt-|pb-)/.test(className);
+
   return (
     <section
       id={id}
-      className={`px-6 py-8 sm:px-10 sm:py-10 lg:px-16 ${className}`}
+      className={`px-6 sm:px-10 lg:px-16 ${hasYPadding ? "" : "py-8 sm:py-10"} ${className}`}
     >
       <div className="mx-auto w-full max-w-5xl">{children}</div>
     </section>
@@ -211,7 +213,7 @@ export default function PontosPage() {
           </div>
         </Section>
 
-        <Section>
+        <Section className="pt-8 pb-4 sm:pt-10 sm:pb-5">
           <Reveal>
             <h2 className="font-display text-[clamp(2.2rem,6vw,5rem)] leading-[0.95] font-medium tracking-[0.02em] text-foreground uppercase">
               <span className="text-[1.12em]">Dez pontos.</span>
@@ -225,7 +227,7 @@ export default function PontosPage() {
           <NetworkMap />
         </Section>
 
-        <Section>
+        <Section className="pt-3 pb-8 sm:pt-4 sm:pb-10">
           <Reveal>
             <h2 className="font-display text-[clamp(1.85rem,4.8vw,3.6rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase">
               O que é a
@@ -235,7 +237,7 @@ export default function PontosPage() {
           </Reveal>
 
           <Reveal delay={100}>
-            <p className="mt-12 max-w-xl text-base leading-8 text-muted sm:mt-16 sm:text-lg">
+            <p className="mt-5 max-w-xl text-base leading-8 text-muted sm:mt-6 sm:text-lg">
               A Conexão Negócios é uma rede de mídia digital local.
             </p>
           </Reveal>
@@ -270,7 +272,7 @@ export default function PontosPage() {
           </Reveal>
         </Section>
 
-        <Section>
+        <Section className="pt-8 pb-4 sm:pt-10 sm:pb-5">
           <Reveal>
             <h2 className="max-w-4xl font-display text-[clamp(1.85rem,4.8vw,3.6rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase">
               Não buscamos apenas lugares para instalar uma TV.
@@ -278,7 +280,7 @@ export default function PontosPage() {
           </Reveal>
 
           <Reveal delay={120}>
-            <p className="mt-12 max-w-xl font-display text-2xl leading-snug text-gold-soft sm:mt-16 sm:text-3xl">
+            <p className="mt-5 max-w-xl font-display text-2xl leading-snug text-gold-soft sm:mt-6 sm:text-3xl">
               Buscamos empresas para fazer parte da rede.
             </p>
           </Reveal>
@@ -299,7 +301,7 @@ export default function PontosPage() {
           </div>
         </Section>
 
-        <Section>
+        <Section className="pt-3 pb-8 sm:pt-4 sm:pb-10">
           <Reveal>
             <h2 className="font-display text-[clamp(1.85rem,4.8vw,3.6rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase">
               Sua empresa não aparece

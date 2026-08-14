@@ -72,6 +72,28 @@ body {
   }
 }
 
+@keyframes pulse-gold-ring {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(198, 166, 103, 0.5),
+      0 0 22px rgba(198, 166, 103, 0.16);
+  }
+  50% {
+    box-shadow:
+      0 0 0 12px rgba(198, 166, 103, 0),
+      0 0 28px rgba(198, 166, 103, 0.28);
+  }
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2.4s ease-in-out infinite;
+}
+
+.animate-pulse-gold-ring {
+  animation: pulse-gold-ring 2.6s ease-in-out infinite;
+}
+
 .animate-fade-up {
   animation: fade-up 0.9s ease-out both;
 }
@@ -310,6 +332,8 @@ body {
   .screens-stage.is-visible .screen-node,
   .screens-stage.is-visible .screens-spine,
   .net-hub-glow,
+  .animate-pulse-gold,
+  .animate-pulse-gold-ring,
   .freq-stage.is-visible .freq-ad,
   .freq-stage.is-visible .freq-bezel,
   .freq-stage.is-visible .freq-hour,

@@ -18,7 +18,7 @@ export function ScreensLink() {
           aria-hidden
         />
 
-        <p className="mb-6 text-center font-sans text-[10px] tracking-[0.32em] text-muted uppercase">
+        <p className="mb-6 text-center font-display text-xl tracking-[0.18em] text-gold uppercase sm:text-2xl">
           Dez telas da rede
         </p>
 
@@ -29,7 +29,7 @@ export function ScreensLink() {
               className="screen-node flex aspect-[5/3] flex-col items-center justify-center border border-line bg-background"
               style={{ animationDelay: `${0.18 + index * 0.07}s` }}
             >
-              <span className="font-display text-base text-gold/70 sm:text-xl">
+              <span className="font-display text-2xl leading-none text-gold/80 sm:text-4xl md:text-5xl">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>

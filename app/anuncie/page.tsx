@@ -158,6 +158,14 @@ export default function AnunciePage() {
               >
                 Conhecer os planos
               </a>
+              <Link
+                href="/negocios"
+                className="animate-pulse-gold-ring inline-flex h-24 w-24 shrink-0 items-center justify-center self-center rounded-full border-2 border-gold bg-gold/10 text-center text-[10px] font-medium tracking-[0.16em] text-gold uppercase transition-colors duration-300 hover:bg-gold/20 hover:text-gold-soft"
+              >
+                Conheça
+                <br />
+                a vitrine
+              </Link>
             </div>
           </div>
         </section>
@@ -337,11 +345,12 @@ export default function AnunciePage() {
             {plans.map((plan, index) => (
               <Reveal key={plan.name} delay={index * 90} className="h-full">
                 <article
-                  className={`relative flex h-full flex-col border px-6 py-8 transition-colors duration-300 sm:px-7 sm:py-10 ${
+                  id={`plano-${plan.name.toLowerCase()}`}
+                  className={`relative flex h-full scroll-mt-24 flex-col border px-6 py-8 transition-colors duration-300 sm:px-7 sm:py-10 ${
                     plan.featured
                       ? "border-gold/60 bg-gold/[0.06] hover:border-gold"
                       : "border-line bg-surface/70 hover:border-gold/45"
-                  }`}
+                  } target:border-gold target:bg-gold/[0.08]`}
                 >
                   <p
                     className={`mb-6 font-sans text-[10px] tracking-[0.28em] uppercase ${
@@ -463,9 +472,11 @@ export default function AnunciePage() {
           <Reveal delay={220}>
             <Link
               href="/negocios"
-              className={`${linkClass} mt-10 w-full border border-gold/50 text-gold hover:border-gold hover:bg-gold/10 sm:w-auto`}
+              className="animate-pulse-gold-ring mt-12 inline-flex h-40 w-40 items-center justify-center rounded-full border-2 border-gold bg-gold/10 text-center text-[11px] font-medium tracking-[0.18em] text-gold uppercase transition-colors duration-300 hover:bg-gold/20 hover:text-gold-soft"
             >
-              Conhecer a vitrine
+              Conhecer
+              <br />
+              a vitrine
             </Link>
           </Reveal>
         </Section>
@@ -545,10 +556,26 @@ export default function AnunciePage() {
             </div>
 
             <Reveal delay={220}>
-              <p className="mt-14 font-sans text-[11px] tracking-[0.32em] text-gold uppercase">
-                Start <span className="text-gold/40">|</span> Pro{" "}
-                <span className="text-gold/40">|</span> Premium
-              </p>
+              <nav
+                aria-label="Escolher plano"
+                className="mt-14 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-sans text-[11px] tracking-[0.32em] text-gold uppercase"
+              >
+                {plans.map((plan, index) => (
+                  <span key={plan.name} className="flex items-center gap-3">
+                    {index > 0 ? (
+                      <span className="text-gold/40" aria-hidden>
+                        |
+                      </span>
+                    ) : null}
+                    <a
+                      href={`#plano-${plan.name.toLowerCase()}`}
+                      className="transition-colors duration-300 hover:text-gold-soft"
+                    >
+                      {plan.name}
+                    </a>
+                  </span>
+                ))}
+              </nav>
             </Reveal>
 
             <Reveal delay={280}>
