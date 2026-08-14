@@ -38,8 +38,10 @@ export interface Business {
   neighborhood: string;
   address: string;
   phone: string;
-  whatsapp: string;
-  instagram: string;
+  whatsapp?: string;
+  instagram?: string;
+  website?: string;
+  googleUrl?: string;
   hours: string;
   products: string[];
   extraCall?: string;
@@ -62,191 +64,220 @@ const PLAN_PRIORITY: Record<BusinessPlan, number> = {
   start: 3,
 };
 
+/**
+ * Empresas reais de Marília usadas como exemplo de layout da Vitrine.
+ * Dados públicos (Google, sites e listagens) para demonstração visual.
+ */
 export const MOCK_BUSINESSES: Business[] = [
   {
     id: "1",
-    slug: "mesa-do-cais",
-    name: "Mesa do Cais",
-    category: "Alimentação",
+    slug: "cheia-de-charme",
+    name: "Cheia de Charme",
+    category: "Beleza",
     plan: "premium",
     shortDescription:
-      "Cozinha contemporânea com ingredientes da região e ambiente para almoços e encontros.",
+      "Salão de beleza em Marília com corte, escova, progressiva e tratamentos capilares.",
     description:
-      "A Mesa do Cais reúne uma cozinha contemporânea, ingredientes de produtores locais e um ambiente pensado para almoços de negócios, jantares e encontros. A casa faz parte da Vitrine Conexão Negócios como um ponto de referência gastronômica na cidade.",
+      "A Cheia de Charme é uma rede de salões com unidade em Marília. O espaço reúne cortes, escova, progressiva, cristalização e coloração em um atendimento pensado para o dia a dia da cidade.",
     neighborhood: "Centro",
-    address: "Rua do Cais, 120 — Centro",
-    phone: "(11) 3400-2100",
-    whatsapp: "5511940021001",
-    instagram: "mesadocais",
-    hours: "Terça a sábado · 12h às 23h",
+    address: "Avenida Carlos Gomes, 629 — Centro, Marília - SP",
+    phone: "Ver no Google",
+    website: "https://www.salaocheiadecharme.com.br/",
+    googleUrl: "https://share.google/P5AyiLQY4J2t036fl",
+    hours: "Segunda a sexta · 8h30 às 18h",
     products: [
-      "Almoço executivo",
-      "Menu degustação",
-      "Carta de vinhos",
-      "Eventos privados",
+      "Corte e escova",
+      "Progressiva",
+      "Cristalização",
+      "Mechas, luzes e coloração",
+      "Hidratação e reconstrução",
     ],
     extraCall: "Conheça esta empresa",
+    coverImage:
+      "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "2",
-    slug: "clinica-vereda",
-    name: "Clínica Vereda",
-    category: "Saúde",
-    plan: "partner",
+    slug: "pizzaria-marilia",
+    name: "Pizzaria Marília",
+    category: "Alimentação",
+    plan: "pro",
     shortDescription:
-      "Cuidado clínico com atendimento humanizado em um ponto estratégico da cidade.",
+      "Pizzas e lanches em Marília, para comer no local ou pedir delivery.",
     description:
-      "A Clínica Vereda oferece acompanhamento em saúde com foco em acolhimento, clareza e permanência. Como Ponto Parceiro, a clínica também integra a estrutura física da Conexão Negócios, conectando pacientes e empresas da rede no mesmo território.",
-    neighborhood: "Jardins",
-    address: "Avenida das Palmeiras, 540 — Jardins",
-    phone: "(11) 3510-4480",
-    whatsapp: "5511940021002",
-    instagram: "clinicavereda",
-    hours: "Segunda a sexta · 8h às 19h",
+      "A Pizzaria Marília serve pizzas, lanches e pratos do dia a dia em um ponto conhecido da cidade. O cardápio é direto, o atendimento é local e o espaço funciona para famílias, encontros e pedidos para viagem.",
+    neighborhood: "Jardim Santa Antonieta",
+    address: "Avenida João Martins Coelho, 1680 — Jardim Santa Antonieta, Marília - SP",
+    phone: "Ver no Google",
+    googleUrl: "https://share.google/S2JlFZlVACHrD3bDj",
+    hours: "Todos os dias · a partir das 18h",
     products: [
-      "Consultas especializadas",
-      "Check-up",
-      "Acompanhamento contínuo",
-      "Orientações preventivas",
+      "Pizzas",
+      "Lanches",
+      "Delivery",
+      "Atendimento no local",
     ],
+    coverImage:
+      "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "3",
-    slug: "atelier-bruma",
-    name: "Atelier Bruma",
+    slug: "rocca-barbearia",
+    name: "Rocca Barbearia",
     category: "Beleza",
     plan: "pro",
     shortDescription:
-      "Estúdio de beleza com atendimento reservado e estética contemporânea.",
+      "Barbearia no Centro de Marília, com corte, barba e agendamento pelo WhatsApp.",
     description:
-      "O Atelier Bruma é um estúdio de beleza pensado para quem busca cuidado, silêncio e um resultado elegante. O espaço combina técnicas atuais com um atendimento reservado, no ritmo de quem valoriza presença e detalhe.",
-    neighborhood: "Vila Nova",
-    address: "Rua das Hortênsias, 88 — Vila Nova",
-    phone: "(11) 3620-7710",
-    whatsapp: "5511940021003",
-    instagram: "atelierbruma",
-    hours: "Terça a sábado · 9h às 19h",
+      "A Rocca Barbearia atende no Centro de Marília com corte masculino, barba e acabamento. O espaço combina o ofício clássico da barbearia com um atendimento próximo, feito para quem quer sair bem e no horário.",
+    neighborhood: "Centro",
+    address: "Rua Álvares Cabral, 513 — Centro, Marília - SP",
+    phone: "(14) 3454-5017",
+    whatsapp: "5514991257811",
+    instagram: "roccabarbearia",
+    website: "https://roccabarbearia.com.br/",
+    googleUrl: "https://share.google/0htxCiHJ013dKoY9P",
+    hours: "Terça a sábado · consulte o horário no Google",
     products: [
-      "Cabelo",
-      "Estética facial",
-      "Design de sobrancelhas",
-      "Ritual de bem-estar",
+      "Corte masculino",
+      "Barba",
+      "Acabamento",
+      "Agendamento pelo WhatsApp",
     ],
+    coverImage:
+      "https://images.unsplash.com/photo-1503951914875-452162b0f3ea?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "4",
-    slug: "oficina-lumen",
-    name: "Oficina Lumen",
-    category: "Automotivo",
-    plan: "pro",
+    slug: "masc-pro",
+    name: "Masc PRO",
+    category: "Beleza",
+    plan: "premium",
     shortDescription:
-      "Manutenção automotiva com diagnóstico preciso e atendimento transparente.",
+      "Cosméticos profissionais de Marília para salões e cuidado capilar em casa.",
     description:
-      "A Oficina Lumen cuida de veículos com diagnóstico técnico, comunicação clara e respeito ao tempo de quem depende do carro no dia a dia. Um serviço local pensado para confiança, não para pressa.",
-    neighborhood: "Distrito",
-    address: "Rua das Oficinas, 310 — Distrito",
-    phone: "(11) 3330-9050",
-    whatsapp: "5511940021004",
-    instagram: "oficinalumen",
-    hours: "Segunda a sexta · 8h às 18h · Sábado · 8h às 13h",
+      "A Masc PRO desenvolve e comercializa cosméticos capilares profissionais a partir de Marília. A linha atende salões e consumidores finais, com shampoos, máscaras e tratamentos pensados para performance no lavatório e no uso diário.",
+    neighborhood: "Jardim Domingos de Leo",
+    address: "Avenida Doutor Durval de Menezes, 164 — Jardim Domingos de Leo, Marília - SP",
+    phone: "(14) 3316-2136",
+    instagram: "mascprofessional",
+    website: "https://mascprofessional.com/",
+    googleUrl: "https://share.google/LlhAEv4ac3qJw03Vc",
+    hours: "Segunda a sexta · horário comercial",
     products: [
-      "Revisão programada",
-      "Diagnóstico eletrônico",
-      "Freios e suspensão",
-      "Manutenção preventiva",
+      "Shampoos profissionais",
+      "Máscaras e tratamentos",
+      "Linha Curls",
+      "Produtos para salão e varejo",
     ],
+    extraCall: "Conheça esta empresa",
+    coverImage:
+      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "5",
-    slug: "casa-alinea",
-    name: "Casa Alínea",
-    category: "Casa e Construção",
-    plan: "start",
+    slug: "orly-bagueteria",
+    name: "Orly Bagueteria",
+    category: "Alimentação",
+    plan: "premium",
     shortDescription:
-      "Arquitetura de interiores e reformas com linhas limpas e materiais duráveis.",
+      "Padaria e cafeteria tradicional do Centro, com baguetes, doces, café e almoço.",
     description:
-      "A Casa Alínea desenvolve projetos de interiores e reformas para residências e pequenos comércios. O trabalho parte da escuta do espaço e chega a soluções objetivas, com materiais escolhidos para durar.",
-    neighborhood: "Bairro Alto",
-    address: "Rua das Acácias, 75 — Bairro Alto",
-    phone: "(11) 3288-4412",
-    whatsapp: "5511940021005",
-    instagram: "casaalinea",
-    hours: "Segunda a sexta · 9h às 18h",
+      "Há décadas no Centro de Marília, a Orly Bagueteria é referência em pães — com destaque para a baguete — além de doces, bolos, lanches e almoços. O ambiente é de padaria clássica, com serviço no local, para viagem e delivery.",
+    neighborhood: "Centro",
+    address: "Rua Paes Leme, 88 — Centro, Marília - SP",
+    phone: "(14) 3413-8488",
+    whatsapp: "5514991310044",
+    instagram: "orlybagueteria",
+    website: "https://linktr.ee/bagueteriaorly",
+    googleUrl: "https://share.google/CwGn2H8e1yggao0gA",
+    hours: "Segunda a sábado · 6h30 às 22h · Domingo com intervalo",
     products: [
-      "Projeto de interiores",
-      "Reforma residencial",
-      "Consultoria de materiais",
-      "Acompanhamento de obra",
+      "Baguetes e pães",
+      "Doces, bolos e tortas",
+      "Café e lanches",
+      "Almoço",
+      "Retirada e delivery",
     ],
+    extraCall: "Conheça esta empresa",
+    coverImage:
+      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "6",
-    slug: "linha-viva",
-    name: "Linha Viva",
-    category: "Moda",
-    plan: "start",
+    slug: "coca-cola",
+    name: "Coca-Cola",
+    category: "Negócios B2B",
+    plan: "premium",
     shortDescription:
-      "Peças autorais e alfaiataria contemporânea com atendimento próximo.",
+      "Fábrica e operação Coca-Cola FEMSA em Marília, presente no cotidiano da cidade.",
     description:
-      "A Linha Viva trabalha moda autoral com corte preciso e atendimento reservado. A loja é um ponto de encontro para quem busca peças duráveis, feitas para o cotidiano da cidade.",
-    neighborhood: "Vila Nova",
-    address: "Rua das Figueiras, 42 — Vila Nova",
-    phone: "(11) 3260-1180",
-    whatsapp: "5511940021006",
-    instagram: "linhaviva",
-    hours: "Segunda a sábado · 10h às 19h",
+      "A Coca-Cola FEMSA mantém operação industrial em Marília, na Chácara dos Laranjais. A unidade faz parte da rede de fabricantes da marca no Brasil e abastece pontos de venda da região com o portfólio Coca-Cola.",
+    neighborhood: "Chácara dos Laranjais",
+    address: "Rua João Viggiani, 10 — Chácara dos Laranjais, Marília - SP",
+    phone: "(14) 2105-2600",
+    website: "https://www.coca-cola.com/br/pt",
+    googleUrl: "https://share.google/SYN3B67DQrLyXanye",
+    hours: "Segunda a sexta · 8h às 18h",
     products: [
-      "Alfaiataria",
-      "Peças autorais",
-      "Consultoria de estilo",
-      "Ajustes",
+      "Bebidas Coca-Cola",
+      "Distribuição regional",
+      "Atendimento a pontos de venda",
+      "Marcas do portfólio",
     ],
+    extraCall: "Conheça esta empresa",
+    coverImage:
+      "https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "7",
-    slug: "orienta-imoveis",
-    name: "Orienta Imóveis",
-    category: "Imobiliárias",
-    plan: "partner",
+    slug: "mercado-livre",
+    name: "Mercado Livre",
+    category: "Negócios B2B",
+    plan: "pro",
     shortDescription:
-      "Assessoria imobiliária local para compra, venda e locação com acompanhamento próximo.",
+      "Marketplace para comprar e vender online, com pagamentos, envios e ofertas.",
     description:
-      "A Orienta Imóveis atua na cidade com foco em escuta, clareza e acompanhamento próximo. Como Ponto Parceiro da Conexão Negócios, a imobiliária também recebe uma tela da rede e participa da estrutura física que conecta empresas e consumidores.",
-    neighborhood: "Orla",
-    address: "Avenida Beira-Rio, 900 — Orla",
-    phone: "(11) 3444-8080",
-    whatsapp: "5511940021007",
-    instagram: "orientaimoveis",
-    hours: "Segunda a sexta · 9h às 18h · Sábado · 9h às 13h",
+      "O Mercado Livre é a plataforma de compra e venda online mais usada no Brasil. Empresas e consumidores encontram produtos, pagam pelo Mercado Pago e recebem com a malha de envios da companhia — um exemplo de presença digital de grande escala na vitrine.",
+    neighborhood: "Brasil",
+    address: "Mercado Livre Brasil · mercadolivre.com.br",
+    phone: "Atendimento pelo site",
+    website: "https://www.mercadolivre.com.br",
+    googleUrl: "https://share.google/Df7wErSGUo5UXEo3s",
+    instagram: "mercadolivre",
+    hours: "Online · 24h",
     products: [
-      "Compra e venda",
-      "Locação residencial",
-      "Imóveis comerciais",
-      "Avaliação local",
+      "Compra e venda online",
+      "Mercado Pago",
+      "Envios",
+      "Ofertas e lojas oficiais",
     ],
+    coverImage:
+      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1400&q=80",
   },
   {
     id: "8",
-    slug: "ponto-certo",
-    name: "Ponto Certo",
-    category: "Serviços",
+    slug: "top-frio",
+    name: "Top Frio",
+    category: "Casa e Construção",
     plan: "start",
     shortDescription:
-      "Serviços para casa e empresa, com agendamento simples e execução cuidadosa.",
+      "Instalação e manutenção de ar condicionado em Marília, com atendimento pelo WhatsApp.",
     description:
-      "O Ponto Certo reúne manutenção, pequenos reparos e apoio operacional para residências e comércios locais. O atendimento é direto, o prazo é combinado e o trabalho é feito para não precisar ser refeito.",
-    neighborhood: "Bairro Alto",
-    address: "Rua do Ofício, 155 — Bairro Alto",
-    phone: "(11) 3377-6400",
-    whatsapp: "5511940021008",
-    instagram: "pontocerto.servicos",
-    hours: "Segunda a sexta · 8h às 18h",
+      "A Top Frio atua em Marília com instalação, manutenção e higienização de ar condicionado para residências e comércios. O contato é direto pelo WhatsApp, para orçamento e agendamento sem burocracia.",
+    neighborhood: "Marília",
+    address: "Marília - SP",
+    phone: "(14) 99788-5990",
+    whatsapp: "5514997885990",
+    hours: "Segunda a sábado · agendamento pelo WhatsApp",
     products: [
-      "Manutenção residencial",
-      "Reparos comerciais",
-      "Instalações",
-      "Suporte avulso",
+      "Instalação de ar condicionado",
+      "Manutenção",
+      "Higienização",
+      "Atendimento residencial e comercial",
     ],
+    coverImage:
+      "https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=80",
   },
 ];
 
@@ -281,6 +312,31 @@ export function getWhatsAppUrl(whatsapp: string): string {
 export function getInstagramUrl(instagram: string): string {
   if (instagram.startsWith("http")) return instagram;
   return `https://instagram.com/${instagram.replace(/^@/, "")}`;
+}
+
+export function getPrimaryContactUrl(business: Business): string {
+  if (business.whatsapp) return getWhatsAppUrl(business.whatsapp);
+  if (business.website) return business.website;
+  if (business.googleUrl) return business.googleUrl;
+  return `https://www.google.com/search?q=${encodeURIComponent(`${business.name} Marília`)}`;
+}
+
+export function getPrimaryContactLabel(business: Business): string {
+  if (business.whatsapp) return "WhatsApp";
+  if (business.website) return "Site oficial";
+  return "Google";
+}
+
+export function getQrCodeImageUrl(data: string, size = 240): string {
+  const params = new URLSearchParams({
+    size: `${size}x${size}`,
+    bgcolor: "0b0b0c",
+    color: "c6a667",
+    qzone: "2",
+    data,
+  });
+
+  return `https://api.qrserver.com/v1/create-qr-code/?${params.toString()}`;
 }
 
 export function filterBusinesses(

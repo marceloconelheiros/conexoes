@@ -2,10 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CoverArt, LogoMark } from "@/components/CoverArt";
+import { ContactQr } from "@/components/ContactQr";
 import {
   getBusinessBySlug,
   getBusinesses,
   getInstagramUrl,
+  getPrimaryContactLabel,
+  getPrimaryContactUrl,
   getWhatsAppUrl,
   PLAN_LABEL,
 } from "@/data/businesses";
@@ -48,7 +51,6 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
 
   const planLabel = PLAN_LABEL[business.plan];
   const gallery = business.gallery?.slice(0, 4) ?? [];
-  const gallerySlots = gallery.length > 0 ? gallery : [0, 1, 2, 3];
   const isPartner = business.plan === "partner";
 
   return (
@@ -144,22 +146,55 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
               ) : null}
 
               <div className="mt-12 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <a
-                  href={getWhatsAppUrl(business.whatsapp)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
-                >
-                  Falar no WhatsApp
-                </a>
-                <a
-                  href={getInstagramUrl(business.instagram)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-12 items-center justify-center border border-gold/50 px-7 text-[11px] font-medium tracking-[0.22em] text-gold uppercase transition-colors duration-300 hover:border-gold hover:bg-gold/10"
-                >
-                  Ver Instagram
-                </a>
+                {business.whatsapp ? (
+                  <a
+                    href={getWhatsAppUrl(business.whatsapp)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
+                  >
+                    Falar no WhatsApp
+                  </a>
+                ) : (
+                  <a
+                    href={getPrimaryContactUrl(business)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft"
+                  >
+                    Abrir {getPrimaryContactLabel(business)}
+                  </a>
+                )}
+                {business.website ? (
+                  <a
+                    href={business.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center justify-center border border-gold/50 px-7 text-[11px] font-medium tracking-[0.22em] text-gold uppercase transition-colors duration-300 hover:border-gold hover:bg-gold/10"
+                  >
+                    Visitar site
+                  </a>
+                ) : null}
+                {business.instagram ? (
+                  <a
+                    href={getInstagramUrl(business.instagram)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center justify-center border border-gold/50 px-7 text-[11px] font-medium tracking-[0.22em] text-gold uppercase transition-colors duration-300 hover:border-gold hover:bg-gold/10"
+                  >
+                    Ver Instagram
+                  </a>
+                ) : null}
+                {business.googleUrl ? (
+                  <a
+                    href={business.googleUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-12 items-center justify-center px-4 text-[11px] font-medium tracking-[0.22em] text-foreground/80 uppercase transition-colors duration-300 hover:text-gold"
+                  >
+                    Google Meu Negócio
+                  </a>
+                ) : null}
               </div>
             </div>
           </div>
@@ -189,9 +224,15 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
                 <p className="mt-4 text-base leading-8 text-foreground/90">
                   {business.phone}
                 </p>
-                <p className="mt-2 text-sm leading-7 text-muted">
-                  Instagram · @{business.instagram.replace(/^@/, "")}
-                </p>
+                {business.instagram ? (
+                  <p className="mt-2 text-sm leading-7 text-muted">
+                    Instagram · @{business.instagram.replace(/^@/, "")}
+                  </p>
+                ) : business.website ? (
+                  <p className="mt-2 text-sm leading-7 text-muted">
+                    Site · {business.website.replace(/^https?:\/\//, "")}
+                  </p>
+                ) : null}
               </div>
             </Reveal>
 
@@ -234,32 +275,43 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
           <div className="mx-auto w-full max-w-5xl">
             <Reveal>
               <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
+                Conecte agora
+              </p>
+              <h2 className="mt-6 max-w-xl font-display text-[clamp(1.7rem,3.8vw,2.6rem)] leading-tight font-medium text-foreground">
+                Serviços, produtos e contato direto.
+              </h2>
+            </Reveal>
+
+            <Reveal delay={80} className="mt-12">
+              <ContactQr business={business} />
+            </Reveal>
+          </div>
+        </section>
+
+        {gallery.length > 0 ? (
+        <section className="border-t border-line px-6 py-20 sm:px-10 sm:py-28 lg:px-16">
+          <div className="mx-auto w-full max-w-5xl">
+            <Reveal>
+              <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
                 Galeria
               </p>
             </Reveal>
 
             <div className="mt-10 grid grid-cols-2 gap-3">
-              {gallerySlots.map((item, index) => (
-                <Reveal key={typeof item === "string" ? item : index} delay={index * 70}>
-                  {typeof item === "string" ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item}
-                      alt=""
-                      className="aspect-[4/3] w-full object-cover"
-                    />
-                  ) : (
-                    <CoverArt
-                      name={business.name}
-                      variant={index + 1}
-                      className="aspect-[4/3]"
-                    />
-                  )}
+              {gallery.map((item, index) => (
+                <Reveal key={item} delay={index * 70}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item}
+                    alt=""
+                    className="aspect-[4/3] w-full object-cover"
+                  />
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
+        ) : null}
       </main>
 
       <footer className="relative z-10 border-t border-line px-6 py-16 sm:px-10 lg:px-16">

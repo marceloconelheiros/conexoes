@@ -145,6 +145,13 @@ export default async function NegociosPage() {
             <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
               Encontre na rede
             </p>
+            <h2 className="mt-8 max-w-xl font-display text-[clamp(1.8rem,4vw,2.75rem)] leading-tight font-medium text-foreground">
+              Empresas de Marília na Vitrine.
+            </h2>
+            <p className="mt-6 max-w-lg text-base leading-8 text-muted">
+              Toque em um card para abrir a página da empresa, ver serviços e
+              escanear o QR Code de contato.
+            </p>
           </Reveal>
 
           <Reveal delay={80} className="mt-10">
