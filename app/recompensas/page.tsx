@@ -44,7 +44,7 @@ export default async function RecompensasPage() {
         className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
-      <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-10 pb-8 sm:px-10 lg:px-16">
         <div className="mx-auto w-full max-w-5xl">
           <Link
             href="/"

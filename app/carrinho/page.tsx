@@ -12,7 +12,7 @@ export default async function CarrinhoPage() {
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden">
-      <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-10 pb-8 sm:px-10 lg:px-16">
         <div className="mx-auto flex w-full max-w-5xl items-center justify-between">
           <Link
             href="/"

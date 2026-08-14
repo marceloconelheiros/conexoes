@@ -36,7 +36,7 @@ export default function Home() {
         className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
-      <header className="relative z-10 px-6 pt-8 pb-2 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-10 pb-2 sm:px-10 lg:px-16">
         <div className="mx-auto w-full max-w-5xl">
           <p className="font-sans text-[11px] font-medium tracking-[0.42em] text-gold uppercase">
             Conexão Negócios

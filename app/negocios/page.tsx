@@ -48,7 +48,7 @@ export default async function NegociosPage() {
         className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(to_right,rgba(255,255,255,0.4)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.4)_1px,transparent_1px)] [background-size:72px_72px]"
       />
 
-      <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-10 pb-8 sm:px-10 lg:px-16">
         <div className="mx-auto w-full max-w-5xl">
           <Link
             href="/"
@@ -60,54 +60,34 @@ export default async function NegociosPage() {
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col">
-        <section className="flex flex-col px-6 pb-8 sm:px-10 lg:px-16">
-          <div className="mx-auto w-full max-w-5xl">
-            <p
-              className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
-              style={{ animationDelay: "0.05s" }}
-            >
-              Vitrine Conexão Negócios
-            </p>
+        <Section id="empresas" className="scroll-mt-8">
+          <p
+            className="animate-fade-up font-sans text-[11px] tracking-[0.38em] text-gold uppercase"
+            style={{ animationDelay: "0.05s" }}
+          >
+            Vitrine Conexão Negócios
+          </p>
+          <h1
+            className="animate-fade-up mt-6 max-w-xl font-display text-[clamp(1.9rem,4.4vw,3.2rem)] leading-[0.98] font-medium tracking-[0.02em] text-foreground uppercase"
+            style={{ animationDelay: "0.12s" }}
+          >
+            Encontre na rede
+          </h1>
+          <p
+            className="animate-fade-up mt-5 max-w-lg text-base leading-8 text-muted"
+            style={{ animationDelay: "0.2s" }}
+          >
+            Empresas de Marília na Vitrine. Toque em um card para abrir a página
+            da empresa, ver serviços e escanear o QR Code de contato.
+          </p>
 
-            <h1
-              className="animate-fade-up mt-8 font-display text-[clamp(2rem,6.2vw,4.6rem)] leading-[0.92] font-medium tracking-[0.04em] text-foreground uppercase"
-              style={{ animationDelay: "0.15s" }}
-            >
-              Descubra negócios
-              <br />
-              que fazem parte
-              <br />
-              da nossa rede.
-            </h1>
-
-            <p
-              className="animate-fade-up mt-10 max-w-xl font-display text-2xl leading-snug font-normal text-gold-soft sm:text-3xl"
-              style={{ animationDelay: "0.28s" }}
-            >
-              Empresas locais conectadas a consumidores locais.
-            </p>
-
-            <p
-              className="animate-fade-up mt-8 max-w-lg text-base leading-8 text-muted sm:text-lg"
-              style={{ animationDelay: "0.4s" }}
-            >
-              Conheça empresas, produtos e serviços que fazem parte da Conexão
-              Negócios.
-            </p>
-
-            <div
-              className="animate-fade-up mt-14"
-              style={{ animationDelay: "0.52s" }}
-            >
-              <a
-                href="#empresas"
-                className="inline-flex h-12 w-full items-center justify-center bg-gold px-7 text-[11px] font-medium tracking-[0.22em] text-background uppercase transition-colors duration-300 hover:bg-gold-soft sm:w-auto"
-              >
-                Explorar negócios
-              </a>
-            </div>
+          <div
+            className="animate-fade-up mt-10"
+            style={{ animationDelay: "0.28s" }}
+          >
+            <BusinessDirectory businesses={businesses} />
           </div>
-        </section>
+        </Section>
 
         <Section>
           <Reveal>
@@ -137,25 +117,6 @@ export default async function NegociosPage() {
             <p className="mt-16 font-display text-[clamp(1.6rem,3.8vw,2.6rem)] leading-tight text-gold uppercase">
               Telas + presença digital + conexão local.
             </p>
-          </Reveal>
-        </Section>
-
-        <Section id="empresas" className="scroll-mt-8">
-          <Reveal>
-            <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
-              Encontre na rede
-            </p>
-            <h2 className="mt-8 max-w-xl font-display text-[clamp(1.8rem,4vw,2.75rem)] leading-tight font-medium text-foreground">
-              Empresas de Marília na Vitrine.
-            </h2>
-            <p className="mt-6 max-w-lg text-base leading-8 text-muted">
-              Toque em um card para abrir a página da empresa, ver serviços e
-              escanear o QR Code de contato.
-            </p>
-          </Reveal>
-
-          <Reveal delay={80} className="mt-10">
-            <BusinessDirectory businesses={businesses} />
           </Reveal>
         </Section>
 

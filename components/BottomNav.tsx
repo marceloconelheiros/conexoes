@@ -57,9 +57,9 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Navegação principal"
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 px-3 pb-[calc(0.65rem+env(safe-area-inset-bottom))] sm:px-6"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-gold/20 bg-[#0b0b0c]/96 shadow-[0_-16px_40px_rgba(0,0,0,0.55)] backdrop-blur-xl"
     >
-      <div className="pointer-events-auto mx-auto flex max-w-lg items-end justify-between border border-gold/25 bg-[#0b0b0c]/88 px-2 pt-2 pb-2 shadow-[0_-12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl">
+      <div className="mx-auto flex h-[4.35rem] max-w-lg items-center justify-between px-1 sm:px-2">
         {items.map((item) => {
           const active = item.match(pathname);
           const labelClass = active ? "text-gold" : "text-muted";
@@ -71,10 +71,10 @@ export function BottomNav() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className="flex min-w-[4.5rem] flex-col items-center gap-1"
+                className="flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1"
               >
                 <span
-                  className={`flex h-12 w-12 items-center justify-center border transition-colors duration-300 ${
+                  className={`flex h-10 w-10 items-center justify-center border transition-colors duration-300 ${
                     active
                       ? "border-gold bg-gold text-background"
                       : "border-gold/70 bg-gold/10 text-gold hover:bg-gold/20"
@@ -98,7 +98,7 @@ export function BottomNav() {
               key={item.href}
               href={item.href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-w-[3.6rem] flex-col items-center gap-1 px-1 py-1 transition-colors duration-300 ${iconClass} hover:text-gold`}
+              className={`flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors duration-300 ${iconClass} hover:text-gold`}
             >
               {item.icon(active)}
               <span
@@ -110,6 +110,10 @@ export function BottomNav() {
           );
         })}
       </div>
+      <div
+        aria-hidden
+        className="h-[calc(0.85rem+env(safe-area-inset-bottom))] bg-[#0b0b0c]"
+      />
     </nav>
   );
 }

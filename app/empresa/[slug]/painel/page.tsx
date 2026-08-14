@@ -56,7 +56,7 @@ export default async function EmpresaPainelPage({ params }: PainelPageProps) {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(198,166,103,0.08),transparent_55%)]"
       />
 
-      <header className="relative z-10 px-6 py-8 sm:px-10 lg:px-16">
+      <header className="relative z-10 px-6 pt-10 pb-8 sm:px-10 lg:px-16">
         <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-6">
           <Link
             href="/"

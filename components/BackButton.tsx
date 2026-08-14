@@ -32,7 +32,7 @@ export function BackButton() {
       type="button"
       onClick={onClick}
       aria-label="Voltar"
-      className="fixed bottom-6 left-6 z-50 inline-flex h-11 items-center bg-background/90 px-5 text-[11px] font-medium tracking-[0.22em] text-gold uppercase shadow-[0_0_0_1px_rgba(198,166,103,0.45)] backdrop-blur-sm transition-colors duration-300 hover:bg-gold/10 sm:bottom-8 sm:left-10"
+      className="fixed bottom-[calc(5.5rem+env(safe-area-inset-bottom))] left-6 z-40 inline-flex h-11 items-center bg-background/90 px-5 text-[11px] font-medium tracking-[0.22em] text-gold uppercase shadow-[0_0_0_1px_rgba(198,166,103,0.45)] backdrop-blur-sm transition-colors duration-300 hover:bg-gold/10 sm:left-10"
     >
       Voltar
     </button>

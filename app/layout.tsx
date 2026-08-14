@@ -63,7 +63,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-background pb-[calc(6.25rem+env(safe-area-inset-bottom))] text-foreground">
+      <body className="flex min-h-full flex-col bg-background pt-[env(safe-area-inset-top)] pb-[calc(5.2rem+0.85rem+env(safe-area-inset-bottom))] text-foreground">
+        <div
+          aria-hidden
+          className="fixed inset-x-0 top-0 z-50 h-[env(safe-area-inset-top)] bg-[#0b0b0c]"
+        />
         {children}
         <BottomNav />
         <PwaRegister />
