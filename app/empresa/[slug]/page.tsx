@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CoverArt, LogoMark } from "@/components/CoverArt";
+import { LogoMark } from "@/components/CoverArt";
+import { CoverMedia } from "@/components/CoverMedia";
 import { ContactQr } from "@/components/ContactQr";
 import {
   getBusinessBySlug,
@@ -89,30 +90,25 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
         <section className="px-6 pb-20 sm:px-10 lg:px-16">
           <div className="mx-auto w-full max-w-5xl">
             <div className="relative overflow-hidden border border-line">
-              {business.coverImage ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={business.coverImage}
-                  alt=""
-                  className="aspect-[16/8] w-full object-cover sm:aspect-[21/8]"
-                />
-              ) : (
-                <CoverArt
-                  name={business.name}
-                  className="aspect-[16/8] sm:aspect-[21/8]"
-                />
-              )}
+              <CoverMedia
+                src={business.coverImage}
+                name={business.name}
+                fit={business.coverFit}
+                className="aspect-[16/8] w-full sm:aspect-[21/8]"
+              />
 
-              <div className="absolute bottom-0 left-6 translate-y-1/2 sm:left-8">
-                <LogoMark
-                  name={business.name}
-                  logo={business.logo}
-                  className="h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem]"
-                />
-              </div>
+              {business.logo ? (
+                <div className="absolute bottom-0 left-6 translate-y-1/2 sm:left-8">
+                  <LogoMark
+                    name={business.name}
+                    logo={business.logo}
+                    className="h-16 w-16 sm:h-[4.5rem] sm:w-[4.5rem]"
+                  />
+                </div>
+              ) : null}
             </div>
 
-            <div className="mt-14 sm:mt-16">
+            <div className={business.logo ? "mt-14 sm:mt-16" : "mt-10 sm:mt-12"}>
               <p className="font-sans text-[11px] tracking-[0.38em] text-gold uppercase">
                 Faz parte da Conexão Negócios
               </p>

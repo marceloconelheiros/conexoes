@@ -46,6 +46,7 @@ export interface Business {
   products: string[];
   extraCall?: string;
   coverImage?: string;
+  coverFit?: "cover" | "contain";
   logo?: string;
   gallery?: string[];
 }
@@ -144,8 +145,7 @@ export const MOCK_BUSINESSES: Business[] = [
       "Acabamento",
       "Agendamento pelo WhatsApp",
     ],
-    coverImage:
-      "https://images.unsplash.com/photo-1503951914875-452162b0f3ea?auto=format&fit=crop&w=1400&q=80",
+    coverImage: "/businesses/rocca-barbearia.jpg",
   },
   {
     id: "4",
@@ -171,8 +171,9 @@ export const MOCK_BUSINESSES: Business[] = [
       "Produtos para salão e varejo",
     ],
     extraCall: "Conheça esta empresa",
-    coverImage:
-      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1400&q=80",
+    logo: "/businesses/masc-pro.png",
+    coverImage: "/businesses/masc-pro.png",
+    coverFit: "contain",
   },
   {
     id: "5",
