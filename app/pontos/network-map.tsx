@@ -96,7 +96,7 @@ export function NetworkMap() {
         })}
       </div>
 
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5 lg:hidden">
+      <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-5 lg:hidden">
         {places.map((place, index) => (
           <div
             key={place.name}

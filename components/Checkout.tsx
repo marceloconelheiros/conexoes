@@ -10,13 +10,16 @@ import {
   cartTotal,
   clearCart,
   getCart,
+  getLastOrderNotice,
   getShopUser,
   isCompleteShopUser,
   registerCustomerForStore,
+  saveLastOrderNotice,
   saveOrder,
   saveShopUser,
   setCartQty,
   type CartLine,
+  type LastOrderNotice,
   type ShopUser,
 } from "@/lib/commerce";
 import { formatPhone } from "@/lib/customers";
@@ -38,10 +41,13 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
   const [editing, setEditing] = useState(true);
   const [cepStatus, setCepStatus] = useState("");
   const [notice, setNotice] = useState("");
+  const [lastOrder, setLastOrder] = useState<LastOrderNotice | null>(null);
 
   useEffect(() => {
     const sync = () => {
-      setCart(getCart());
+      const nextCart = getCart();
+      setCart(nextCart);
+      setLastOrder(nextCart.length === 0 ? getLastOrderNotice() : null);
       const stored = getShopUser();
       if (stored) {
         setForm({ ...emptyUser, ...stored });
@@ -105,6 +111,15 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
     if (!store || cart.length === 0) return;
 
     saveShopUser(form);
+
+    const url = buildWhatsAppOrder(store, form, cart);
+    if (!url) {
+      setNotice(
+        "Esta loja ainda não tem WhatsApp na vitrine. O pedido continua no carrinho.",
+      );
+      return;
+    }
+
     registerCustomerForStore(form, { slug: store.slug, name: store.name });
     saveOrder({
       id: `p-${Date.now()}`,
@@ -118,15 +133,50 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
       })),
       at: new Date().toISOString(),
     });
-
-    const url = buildWhatsAppOrder(store, form, cart);
-    clearCart();
+    saveLastOrderNotice({
+      storeSlug: store.slug,
+      storeName: store.name,
+      whatsappUrl: url,
+      at: new Date().toISOString(),
+    });
     setEditing(false);
-    if (url) {
-      window.open(url, "_blank", "noopener,noreferrer");
-    }
-    setNotice(
-      "Pedido enviado. Você já aparece na lista de clientes da loja. Comente na página para liberar o cashback.",
+    clearCart();
+    window.location.assign(url);
+  }
+
+  if (cart.length === 0 && lastOrder) {
+    return (
+      <div className="max-w-lg">
+        <p className="font-display text-[clamp(1.8rem,4vw,2.8rem)] leading-tight">
+          Pedido enviado para {lastOrder.storeName}.
+        </p>
+        <p className="mt-6 text-base leading-8 text-muted">
+          Você já aparece na lista de clientes da loja. Comente na página para
+          liberar o cashback.
+        </p>
+        <div className="mt-10 flex flex-wrap gap-3">
+          {lastOrder.whatsappUrl ? (
+            <a
+              href={lastOrder.whatsappUrl}
+              className="inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] tracking-[0.22em] text-background uppercase"
+            >
+              Abrir WhatsApp
+            </a>
+          ) : null}
+          <Link
+            href={`/empresa/${lastOrder.storeSlug}`}
+            className="inline-flex h-12 items-center justify-center border border-gold/40 px-7 text-[11px] tracking-[0.22em] text-gold uppercase"
+          >
+            Ir para a loja
+          </Link>
+          <Link
+            href="/negocios"
+            className="inline-flex h-12 items-center justify-center px-4 text-[11px] tracking-[0.22em] text-muted uppercase"
+          >
+            Ver lojas
+          </Link>
+        </div>
+      </div>
     );
   }
 
@@ -139,7 +189,6 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
         <p className="mt-6 text-base leading-8 text-muted">
           Escolha um produto na landing da loja para montar o pedido.
         </p>
-        {notice ? <p className="mt-6 text-sm text-gold-soft">{notice}</p> : null}
         <Link
           href="/negocios"
           className="mt-10 inline-flex h-12 items-center justify-center bg-gold px-7 text-[11px] tracking-[0.22em] text-background uppercase"

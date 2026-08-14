@@ -151,7 +151,7 @@ export function BottomNav() {
           >
             <MenuIcon active={menuActive || open} />
             <span
-              className={`font-sans text-[9px] tracking-[0.18em] uppercase ${
+              className={`max-w-full px-0.5 text-center font-sans text-[8px] leading-tight tracking-[0.1em] uppercase sm:text-[9px] sm:tracking-[0.16em] ${
                 menuActive || open ? "text-gold" : "text-muted"
               }`}
             >
@@ -163,7 +163,7 @@ export function BottomNav() {
             <div
               id="bottom-more-menu"
               role="menu"
-              className="absolute right-1 bottom-[calc(100%+0.55rem)] w-52 border border-gold/25 bg-[#0b0b0c] py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.55)]"
+              className="absolute right-0 bottom-[calc(100%+0.55rem)] w-[min(13rem,calc(100vw-1.25rem))] border border-gold/25 bg-[#0b0b0c] py-2 shadow-[0_-18px_40px_rgba(0,0,0,0.55)]"
             >
               {menuItems.map((item) => {
                 const active = item.match(pathname);
@@ -209,7 +209,7 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
       <Link
         href={item.href}
         aria-current={active ? "page" : undefined}
-        className="flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1"
+        className="flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 px-0.5"
       >
         <span
           className={`flex h-10 w-10 items-center justify-center border transition-colors duration-300 ${
@@ -223,7 +223,7 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
           </span>
         </span>
         <span
-          className={`font-sans text-[9px] tracking-[0.18em] uppercase ${labelClass}`}
+          className={`max-w-full px-0.5 text-center font-sans text-[8px] leading-tight tracking-[0.1em] uppercase sm:text-[9px] sm:tracking-[0.16em] ${labelClass}`}
         >
           {item.label}
         </span>
@@ -235,11 +235,11 @@ function NavLink({ item, pathname }: { item: NavItem; pathname: string }) {
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      className={`flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 transition-colors duration-300 ${iconClass} hover:text-gold`}
+      className={`flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-1 px-0.5 transition-colors duration-300 ${iconClass} hover:text-gold`}
     >
       {item.icon(active)}
       <span
-        className={`font-sans text-[9px] tracking-[0.18em] uppercase ${labelClass}`}
+        className={`max-w-full px-0.5 text-center font-sans text-[8px] leading-tight tracking-[0.1em] uppercase sm:text-[9px] sm:tracking-[0.16em] ${labelClass}`}
       >
         {item.label}
       </span>

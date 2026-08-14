@@ -78,8 +78,12 @@ function readJson<T>(key: string, fallback: T): T {
 }
 
 function writeJson<T>(key: string, value: T) {
-  localStorage.setItem(key, JSON.stringify(value));
-  window.dispatchEvent(new Event("conexao-commerce"));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    window.dispatchEvent(new Event("conexao-commerce"));
+  } catch (error) {
+    console.error("Não foi possível salvar os dados do pedido.", error);
+  }
 }
 
 export function getCatalog(slug: string): CatalogItem[] {
@@ -100,7 +104,7 @@ export function getCart(): CartLine[] {
 export function addToCart(line: Omit<CartLine, "qty">, qty = 1) {
   const cart = getCart();
   const sameStore = cart.length === 0 || cart[0]?.storeSlug === line.storeSlug;
-  const next = sameStore ? cart : [];
+  const next = sameStore ? [...cart] : [];
   const found = next.find((item) => item.id === line.id);
 
   if (found) {
@@ -109,6 +113,7 @@ export function addToCart(line: Omit<CartLine, "qty">, qty = 1) {
     next.push({ ...line, qty });
   }
 
+  clearLastOrderNotice();
   writeJson(KEYS.cart, next);
   return next;
 }
@@ -127,6 +132,10 @@ export function clearCart() {
 
 export function cartTotal(cart = getCart()) {
   return cart.reduce((sum, item) => sum + item.priceCents * item.qty, 0);
+}
+
+export function cartCount(cart = getCart()) {
+  return cart.reduce((sum, item) => sum + item.qty, 0);
 }
 
 export function getShopUser(): ShopUser | null {
@@ -203,7 +212,7 @@ export function creditWallet(cents: number, label: string) {
 }
 
 export function buildWhatsAppOrder(
-  business: Pick<Business, "name" | "whatsapp">,
+  business: Pick<Business, "name" | "whatsapp" | "phone">,
   user: ShopUser,
   cart: CartLine[],
 ) {
@@ -227,8 +236,55 @@ export function buildWhatsAppOrder(
   ];
 
   const text = encodeURIComponent(lines.join("\n"));
-  const phone = business.whatsapp?.replace(/\D/g, "") ?? "";
+  const phone = whatsappDigits(business.whatsapp, business.phone);
   return phone ? `https://wa.me/${phone}?text=${text}` : null;
+}
+
+function whatsappDigits(whatsapp?: string, phone?: string) {
+  const fromWhatsapp = (whatsapp ?? "").replace(/\D/g, "");
+  if (fromWhatsapp.length >= 12) return fromWhatsapp;
+  if (fromWhatsapp.length === 11) return `55${fromWhatsapp}`;
+  if (fromWhatsapp.length === 10) return `55${fromWhatsapp}`;
+
+  const fromPhone = (phone ?? "").replace(/\D/g, "");
+  if (fromPhone.length >= 12) return fromPhone;
+  if (fromPhone.length === 11) return `55${fromPhone}`;
+  return "";
+}
+
+const LAST_ORDER_KEY = "conexao-last-order";
+
+export type LastOrderNotice = {
+  storeSlug: string;
+  storeName: string;
+  whatsappUrl: string | null;
+  at: string;
+};
+
+export function saveLastOrderNotice(notice: LastOrderNotice) {
+  try {
+    sessionStorage.setItem(LAST_ORDER_KEY, JSON.stringify(notice));
+  } catch {
+    /* ignore */
+  }
+}
+
+export function getLastOrderNotice(): LastOrderNotice | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = sessionStorage.getItem(LAST_ORDER_KEY);
+    return raw ? (JSON.parse(raw) as LastOrderNotice) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function clearLastOrderNotice() {
+  try {
+    sessionStorage.removeItem(LAST_ORDER_KEY);
+  } catch {
+    /* ignore */
+  }
 }
 
 export function cashbackForOrder(totalCents: number, plan: Business["plan"]) {

@@ -15,12 +15,12 @@ const concept = [
 
 export function ConceptPath() {
   return (
-    <Reveal className="mt-16 sm:mt-20">
+    <Reveal className="mt-10 sm:mt-16">
       <ol className="hidden items-stretch lg:flex">
         {concept.map((step, index) => (
-          <li key={step.label} className="flex flex-1 items-stretch">
+          <li key={step.label} className="flex min-w-0 flex-1 items-stretch">
             <div
-              className={`flex flex-1 flex-col justify-between border px-5 py-7 ${
+              className={`flex min-w-0 flex-1 flex-col justify-between border px-4 py-6 xl:px-5 xl:py-7 ${
                 step.highlight
                   ? "border-gold/50 bg-gold/[0.05]"
                   : "border-line bg-surface/70"
@@ -30,17 +30,17 @@ export function ConceptPath() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3
-                className={`mt-8 font-display text-[1.65rem] leading-[0.95] tracking-[0.06em] uppercase ${
+                className={`mt-6 font-display text-[clamp(1.25rem,1.5vw,1.65rem)] leading-[1.05] tracking-[0.04em] break-words uppercase ${
                   step.highlight ? "text-gold" : "text-foreground"
                 }`}
               >
                 {step.label}
               </h3>
-              <p className="mt-4 text-sm leading-6 text-muted">{step.detail}</p>
+              <p className="mt-3 text-sm leading-6 text-muted">{step.detail}</p>
             </div>
             {index < concept.length - 1 ? (
               <div
-                className="flex w-10 items-center justify-center text-gold/70"
+                className="flex w-7 shrink-0 items-center justify-center text-gold/70 xl:w-10"
                 aria-hidden
               >
                 →
@@ -54,7 +54,7 @@ export function ConceptPath() {
         {concept.map((step, index) => (
           <li key={step.label} className="flex flex-col items-center">
             <div
-              className={`w-full border px-6 py-7 ${
+              className={`w-full border px-5 py-6 sm:px-6 sm:py-7 ${
                 step.highlight
                   ? "border-gold/50 bg-gold/[0.05]"
                   : "border-line bg-surface/70"
@@ -64,7 +64,7 @@ export function ConceptPath() {
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3
-                className={`mt-4 font-display text-[1.85rem] leading-[0.95] tracking-[0.06em] uppercase ${
+                className={`mt-4 font-display text-[1.55rem] leading-[1.05] tracking-[0.06em] break-words uppercase sm:text-[1.85rem] sm:leading-[0.95] ${
                   step.highlight ? "text-gold" : "text-foreground"
                 }`}
               >
@@ -105,25 +105,25 @@ const brands = [
 
 export function FrequencyCycle() {
   return (
-    <Reveal className="freq-stage mt-16 sm:mt-20">
-      <div className="mx-auto max-w-xl">
-        <div className="freq-bezel border border-gold/30 bg-surface/80 p-3 sm:p-4">
-          <div className="relative flex aspect-[16/10] flex-col justify-between border border-line bg-background px-5 py-5 sm:px-8 sm:py-7">
-            <div className="flex items-center justify-between">
+    <Reveal className="freq-stage mt-10 sm:mt-16">
+      <div className="mx-auto w-full max-w-xl">
+        <div className="freq-bezel border border-gold/30 bg-surface/80 p-2.5 sm:p-4">
+          <div className="relative flex aspect-[16/11] flex-col justify-between border border-line bg-background px-4 py-4 sm:aspect-[16/10] sm:px-8 sm:py-7">
+            <div className="flex items-center justify-between gap-3">
               <span className="flex gap-1.5" aria-hidden>
                 <span className="h-1.5 w-1.5 rounded-full bg-gold/40" />
                 <span className="h-1.5 w-1.5 rounded-full bg-gold/25" />
               </span>
-              <span className="font-sans text-[9px] tracking-[0.28em] text-muted uppercase">
+              <span className="font-sans text-[8px] tracking-[0.18em] text-muted uppercase sm:text-[9px] sm:tracking-[0.28em]">
                 Ciclo · 15 min
               </span>
             </div>
 
-            <div className="relative min-h-[4.6rem] sm:min-h-[5.4rem]" aria-hidden>
+            <div className="relative min-h-[3.8rem] sm:min-h-[5.4rem]" aria-hidden>
               {brands.map((brand) => (
                 <p
                   key={brand.delay}
-                  className={`freq-brand ${brand.delay} absolute inset-x-0 top-0 font-display text-[clamp(1.8rem,5vw,2.8rem)] leading-[0.92] tracking-[0.06em] text-foreground uppercase`}
+                  className={`freq-brand ${brand.delay} absolute inset-x-0 top-0 font-display text-[clamp(1.35rem,6.2vw,2.8rem)] leading-[0.95] tracking-[0.04em] break-words text-foreground uppercase sm:tracking-[0.06em]`}
                 >
                   {brand.line1}
                   <br />
@@ -132,7 +132,7 @@ export function FrequencyCycle() {
               ))}
             </div>
 
-            <p className="font-sans text-[10px] tracking-[0.22em] text-muted uppercase">
+            <p className="font-sans text-[9px] tracking-[0.16em] text-muted uppercase sm:text-[10px] sm:tracking-[0.22em]">
               Retorna ao longo do dia
             </p>
           </div>
@@ -144,11 +144,11 @@ export function FrequencyCycle() {
           Atlas, Casa Leme, Oficina Prisma, Imobiliária Vale e Café Brasa.
         </p>
 
-        <div className="mt-6 grid grid-cols-3 gap-2 sm:grid-cols-6" aria-hidden>
+        <div className="mt-4 grid grid-cols-3 gap-1.5 sm:mt-6 sm:grid-cols-6 sm:gap-2" aria-hidden>
           {hours.map((hour) => (
             <div
               key={hour.label}
-              className={`freq-hour ${hour.delay} border px-2 py-3 text-center font-sans text-[10px] tracking-[0.2em] uppercase`}
+              className={`freq-hour ${hour.delay} border px-1 py-2.5 text-center font-sans text-[9px] tracking-[0.14em] uppercase sm:px-2 sm:py-3 sm:text-[10px] sm:tracking-[0.2em]`}
             >
               {hour.label}
             </div>
@@ -188,10 +188,10 @@ const affinities: {
 
 export function AffinityGrid() {
   return (
-    <div className="mt-16 grid gap-3 sm:grid-cols-2">
+    <div className="mt-10 grid gap-3 sm:mt-16 sm:grid-cols-2">
       {affinities.map((item, index) => (
         <Reveal key={item.from} delay={index * 80}>
-          <article className="flex h-full flex-col border border-line bg-surface/70 px-6 py-8 transition-colors duration-300 hover:border-gold/45">
+          <article className="flex h-full flex-col border border-line bg-surface/70 px-5 py-6 transition-colors duration-300 hover:border-gold/45 sm:px-6 sm:py-8">
             <span className="text-gold">
               <PlaceIcon name={item.place} />
             </span>
@@ -215,8 +215,8 @@ const campaigns = [
 
 export function ProductionTimeline() {
   return (
-    <Reveal className="mt-16 sm:mt-20">
-      <ol className="hidden lg:grid lg:grid-cols-4">
+    <Reveal className="mt-10 overflow-x-hidden sm:mt-16">
+      <ol className="hidden md:grid md:grid-cols-4">
         {campaigns.map((item, index) => (
           <li key={item.month} className="relative px-3 text-center">
             {index < campaigns.length - 1 ? (
@@ -229,14 +229,14 @@ export function ProductionTimeline() {
             <p className="mt-6 font-sans text-[10px] tracking-[0.24em] text-gold uppercase">
               {item.month}
             </p>
-            <p className="mt-3 font-display text-xl tracking-[0.06em] text-foreground uppercase">
+            <p className="mt-3 font-display text-lg tracking-[0.06em] text-foreground uppercase xl:text-xl">
               {item.campaign}
             </p>
           </li>
         ))}
       </ol>
 
-      <ol className="lg:hidden">
+      <ol className="md:hidden">
         {campaigns.map((item, index) => (
           <li key={item.month} className="flex gap-5">
             <div className="flex flex-col items-center" aria-hidden>
@@ -260,45 +260,6 @@ export function ProductionTimeline() {
   );
 }
 
-const vitrineCards = [
-  { category: "Estética", name: "Studio Norte" },
-  { category: "Saúde", name: "Clínica Atlas" },
-  { category: "Gastronomia", name: "Casa Leme" },
-  { category: "Serviços", name: "Oficina Prisma" },
-];
-
-export function VitrinePreview() {
-  return (
-    <Reveal className="mt-16 sm:mt-20">
-      <div className="border border-line bg-surface/50 p-4 sm:p-6">
-        <div className="mb-5 flex items-center justify-between border-b border-line pb-4">
-          <span className="font-sans text-[10px] tracking-[0.28em] text-gold uppercase">
-            Vitrine de Negócios
-          </span>
-          <span className="font-sans text-[10px] tracking-[0.2em] text-muted uppercase">
-            Rede local
-          </span>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          {vitrineCards.map((card) => (
-            <article
-              key={card.name}
-              className="border border-line bg-background px-4 py-5 sm:px-5 sm:py-6"
-            >
-              <p className="font-sans text-[9px] tracking-[0.24em] text-gold uppercase">
-                {card.category}
-              </p>
-              <p className="mt-3 font-display text-xl leading-tight tracking-[0.04em] text-foreground uppercase sm:text-2xl">
-                {card.name}
-              </p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </Reveal>
-  );
-}
-
 const growth = [
   { name: "Start", screens: "2 telas" },
   { name: "Pro", screens: "5 telas" },
@@ -307,24 +268,24 @@ const growth = [
 
 export function GrowthPath() {
   return (
-    <Reveal className="mt-16 sm:mt-20">
-      <ol className="hidden items-stretch sm:flex">
+    <Reveal className="mt-10 sm:mt-16">
+      <ol className="hidden items-stretch md:flex">
         {growth.map((step, index) => (
-          <li key={step.name} className="flex flex-1 items-stretch">
+          <li key={step.name} className="flex min-w-0 flex-1 items-stretch">
             <a
               href={`#plano-${step.name.toLowerCase()}`}
-              className="flex flex-1 flex-col items-center justify-center border border-line bg-surface/70 px-4 py-8 text-center transition-colors duration-300 hover:border-gold/55 hover:bg-gold/[0.06]"
+              className="flex min-w-0 flex-1 flex-col items-center justify-center border border-line bg-surface/70 px-3 py-7 text-center transition-colors duration-300 hover:border-gold/55 hover:bg-gold/[0.06] sm:px-4 sm:py-8"
             >
-              <span className="font-display text-3xl tracking-[0.08em] text-foreground uppercase">
+              <span className="font-display text-2xl tracking-[0.08em] text-foreground uppercase lg:text-3xl">
                 {step.name}
               </span>
-              <span className="mt-3 font-sans text-[11px] tracking-[0.22em] text-gold uppercase">
+              <span className="mt-3 font-sans text-[10px] tracking-[0.18em] text-gold uppercase sm:text-[11px] sm:tracking-[0.22em]">
                 {step.screens}
               </span>
             </a>
             {index < growth.length - 1 ? (
               <div
-                className="flex w-10 items-center justify-center text-gold/70"
+                className="flex w-6 shrink-0 items-center justify-center text-gold/70 lg:w-10"
                 aria-hidden
               >
                 →
@@ -334,7 +295,7 @@ export function GrowthPath() {
         ))}
       </ol>
 
-      <ol className="flex flex-col sm:hidden">
+      <ol className="flex flex-col md:hidden">
         {growth.map((step, index) => (
           <li key={step.name} className="flex flex-col items-center">
             <a
@@ -373,7 +334,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`px-6 py-8 sm:px-10 sm:py-10 lg:px-16 ${className}`}
+      className={`border-t border-line px-5 py-16 sm:px-10 sm:py-24 lg:px-16 lg:py-32 ${className}`}
     >
       <div className="mx-auto w-full max-w-5xl">{children}</div>
     </section>

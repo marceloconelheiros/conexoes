@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { money, type CatalogItem } from "@/data/catalog";
-import { addToCart, getCatalog } from "@/lib/commerce";
+import { addToCart, cartCount, getCart, getCatalog } from "@/lib/commerce";
 import { SafeImage } from "./SafeImage";
 
 type StoreCatalogProps = {
@@ -16,9 +16,14 @@ type StoreCatalogProps = {
 export function StoreCatalog({ slug, storeName, initialItems }: StoreCatalogProps) {
   const router = useRouter();
   const [items, setItems] = useState<CatalogItem[]>(initialItems);
+  const [count, setCount] = useState(0);
+  const [addedId, setAddedId] = useState<string | null>(null);
 
   useEffect(() => {
-    const sync = () => setItems(getCatalog(slug));
+    const sync = () => {
+      setItems(getCatalog(slug));
+      setCount(cartCount(getCart()));
+    };
     sync();
     window.addEventListener("conexao-commerce", sync);
     return () => window.removeEventListener("conexao-commerce", sync);
@@ -32,11 +37,16 @@ export function StoreCatalog({ slug, storeName, initialItems }: StoreCatalogProp
   if (ordered.length === 0) return null;
 
   function add(item: CatalogItem, goToCart: boolean) {
-    addToCart({
+    const next = addToCart({
       ...item,
       storeSlug: slug,
       storeName,
     });
+    setCount(cartCount(next));
+    setAddedId(item.id);
+    window.setTimeout(() => {
+      setAddedId((current) => (current === item.id ? null : current));
+    }, 1600);
     if (goToCart) router.push("/carrinho");
   }
 
@@ -51,6 +61,18 @@ export function StoreCatalog({ slug, storeName, initialItems }: StoreCatalogProp
       <p className="mt-3 max-w-lg text-[17px] leading-7 text-[#6b6b6b]">
         Monte o pedido aqui. O pagamento continua no WhatsApp da loja.
       </p>
+
+      {count > 0 ? (
+        <Link
+          href="/carrinho"
+          className="mt-5 flex items-center justify-between rounded-xl bg-[#fff4ef] px-4 py-3 text-[15px] font-bold text-[#EA1D2C] shadow-[0_6px_16px_rgba(234,29,44,0.12)]"
+        >
+          <span>
+            {count} {count === 1 ? "item" : "itens"} no carrinho
+          </span>
+          <span>Ver carrinho →</span>
+        </Link>
+      ) : null}
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {ordered.map((item) => (
@@ -83,7 +105,7 @@ export function StoreCatalog({ slug, storeName, initialItems }: StoreCatalogProp
                   onClick={() => add(item, false)}
                   className="inline-flex h-12 items-center justify-center rounded-xl bg-[#FF5A1F] px-4 text-[15px] font-bold text-white shadow-[0_6px_16px_rgba(255,90,31,0.35)] transition-colors hover:bg-[#e04e18]"
                 >
-                  Adicionar ao carrinho
+                  {addedId === item.id ? "Adicionado ✓" : "Adicionar ao carrinho"}
                 </button>
                 <button
                   type="button"
@@ -102,7 +124,7 @@ export function StoreCatalog({ slug, storeName, initialItems }: StoreCatalogProp
         href="/carrinho"
         className="mt-6 inline-flex text-[18px] font-bold text-[#EA1D2C]"
       >
-        Ver carrinho →
+        {count > 0 ? `Ver carrinho (${count}) →` : "Ver carrinho →"}
       </Link>
     </div>
   );
