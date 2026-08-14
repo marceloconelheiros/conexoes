@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { LogoMark } from "@/components/CoverArt";
 import { CoverMedia } from "@/components/CoverMedia";
 import { ContactQr } from "@/components/ContactQr";
+import { StoreInsights } from "@/components/StoreInsights";
+import { getStoreAnalytics } from "@/data/analytics";
 import {
   getBusinessBySlug,
   getBusinesses,
@@ -53,6 +55,7 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
   const planLabel = PLAN_LABEL[business.plan];
   const gallery = business.gallery?.slice(0, 4) ?? [];
   const isPartner = business.plan === "partner";
+  const analytics = getStoreAnalytics(business.slug, 30);
 
   return (
     <div className="relative flex min-h-full flex-1 flex-col overflow-x-hidden">
@@ -191,8 +194,26 @@ export default async function EmpresaPage({ params }: EmpresaPageProps) {
                     Google Meu Negócio
                   </a>
                 ) : null}
+                <Link
+                  href={`/empresa/${business.slug}/painel`}
+                  className="inline-flex h-12 items-center justify-center px-4 text-[11px] font-medium tracking-[0.22em] text-muted uppercase transition-colors duration-300 hover:text-gold"
+                >
+                  Painel da loja
+                </Link>
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="px-6 py-8 sm:px-10 sm:py-10 lg:px-16">
+          <div className="mx-auto w-full max-w-5xl">
+            <Reveal>
+              <StoreInsights
+                storeName={business.name}
+                points={analytics}
+                mode="public"
+              />
+            </Reveal>
           </div>
         </section>
 

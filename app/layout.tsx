@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist, Geist_Mono } from "next/font/google";
-import { BackButton } from "@/components/BackButton";
+import { BottomNav } from "@/components/BottomNav";
+import { PwaRegister } from "@/components/PwaRegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,6 +24,20 @@ export const metadata: Metadata = {
   title: "Conexão Negócios",
   description:
     "Uma rede de mídia digital criada para conectar empresas aos consumidores através de telas instaladas em pontos estratégicos da cidade.",
+  applicationName: "Conexão Negócios",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Conexão",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b0b0c",
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -31,9 +46,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="flex min-h-full flex-col bg-background pb-[calc(6.25rem+env(safe-area-inset-bottom))] text-foreground">
         {children}
-        <BackButton />
+        <BottomNav />
+        <PwaRegister />
       </body>
     </html>
   );
