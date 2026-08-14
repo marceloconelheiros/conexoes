@@ -208,17 +208,15 @@ export function AffinityGrid() {
 
 const campaigns = [
   { month: "Mês 1", campaign: "Campanha 01" },
-  { month: "Mês 3", campaign: "Campanha 02" },
-  { month: "Mês 5", campaign: "Campanha 03" },
-  { month: "Mês 7", campaign: "Campanha 04" },
-  { month: "Mês 9", campaign: "Campanha 05" },
-  { month: "Mês 11", campaign: "Campanha 06" },
+  { month: "Mês 4", campaign: "Campanha 02" },
+  { month: "Mês 7", campaign: "Campanha 03" },
+  { month: "Mês 10", campaign: "Campanha 04" },
 ];
 
 export function ProductionTimeline() {
   return (
     <Reveal className="mt-16 sm:mt-20">
-      <ol className="hidden lg:grid lg:grid-cols-6">
+      <ol className="hidden lg:grid lg:grid-cols-4">
         {campaigns.map((item, index) => (
           <li key={item.month} className="relative px-3 text-center">
             {index < campaigns.length - 1 ? (

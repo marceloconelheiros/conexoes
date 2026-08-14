@@ -43,7 +43,7 @@ const plans = [
     name: "Pro",
     tagline: "Amplie sua presença.",
     screens: "5 telas",
-    price: "349",
+    price: "389,90",
     featured: true,
     benefits: [
       "presença em 5 telas",
@@ -71,7 +71,7 @@ const plans = [
 
 const daily = [
   { name: "Start", month: "197", day: "6,57" },
-  { name: "Pro", month: "349", day: "11,63" },
+  { name: "Pro", month: "389,90", day: "13,00" },
   { name: "Premium", month: "697", day: "23,23" },
 ];
 
@@ -311,7 +311,7 @@ export default function AnunciePage() {
 
           <Reveal delay={120}>
             <p className="mt-12 font-display text-[clamp(1.7rem,4vw,3rem)] leading-tight text-gold-soft">
-              1 nova produção publicitária a cada 2 meses.
+              1 nova produção publicitária a cada 3 meses.
             </p>
           </Reveal>
 
@@ -327,7 +327,7 @@ export default function AnunciePage() {
 
           <Reveal delay={160}>
             <p className="mt-16 font-display text-[clamp(1.7rem,4vw,3rem)] leading-tight text-gold uppercase">
-              Até 6 novas produções em 12 meses.
+              Até 4 novas produções em 12 meses.
             </p>
           </Reveal>
         </Section>
