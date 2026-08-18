@@ -4,6 +4,7 @@ import { CustomerTable } from "@/components/CustomerTable";
 import { OwnerCatalog } from "@/components/OwnerCatalog";
 import { StoreInsights } from "@/components/StoreInsights";
 import { getStoreAnalytics } from "@/data/analytics";
+import { StoreWhatsAppField } from "@/components/StoreWhatsAppField";
 import {
   PLAN_LABEL,
   type Business,
@@ -62,10 +63,12 @@ export function StoreDashboard({ business }: StoreDashboardProps) {
           <Field label="Endereço" value={business.address} />
           <Field label="Horário" value={business.hours} />
           <Field label="Telefone" value={business.phone} />
-          <Field
-            label="WhatsApp"
-            value={business.whatsapp ?? "Não informado"}
-          />
+          <div className="sm:col-span-2">
+            <StoreWhatsAppField
+              slug={business.slug}
+              initial={business.whatsapp}
+            />
+          </div>
         </dl>
         <Link
           href={`/empresa/${business.slug}`}

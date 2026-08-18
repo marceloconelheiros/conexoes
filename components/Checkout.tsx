@@ -14,10 +14,13 @@ import {
   getShopUser,
   isCompleteShopUser,
   registerCustomerForStore,
+  resolveStoreWhatsApp,
   saveLastOrderNotice,
   saveOrder,
   saveShopUser,
+  saveStoreWhatsApp,
   setCartQty,
+  toLocalWhatsApp,
   type CartLine,
   type LastOrderNotice,
   type ShopUser,
@@ -42,6 +45,7 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
   const [cepStatus, setCepStatus] = useState("");
   const [notice, setNotice] = useState("");
   const [lastOrder, setLastOrder] = useState<LastOrderNotice | null>(null);
+  const [storeWhatsapp, setStoreWhatsapp] = useState("");
 
   useEffect(() => {
     const sync = () => {
@@ -65,6 +69,17 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
   );
   const total = cartTotal(cart);
   const complete = isCompleteShopUser(form);
+  const needsStoreWhatsapp = Boolean(store) && storeWhatsapp.replace(/\D/g, "").length < 10;
+
+  useEffect(() => {
+    if (!store) {
+      setStoreWhatsapp("");
+      return;
+    }
+    setStoreWhatsapp(
+      toLocalWhatsApp(resolveStoreWhatsApp(store) || store.whatsapp || ""),
+    );
+  }, [store]);
 
   function patch(next: Partial<ShopUser>) {
     setForm((current) => ({ ...current, ...next }));
@@ -112,13 +127,16 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
 
     saveShopUser(form);
 
-    const url = buildWhatsAppOrder(store, form, cart);
-    if (!url) {
-      setNotice(
-        "Esta loja ainda não tem WhatsApp na vitrine. O pedido continua no carrinho.",
-      );
-      return;
+    const storePhone = storeWhatsapp || resolveStoreWhatsApp(store);
+    if (storePhone.replace(/\D/g, "").length >= 10) {
+      saveStoreWhatsApp(store.slug, storePhone);
     }
+
+    const url = buildWhatsAppOrder(
+      { ...store, whatsapp: storePhone || store.whatsapp },
+      form,
+      cart,
+    );
 
     registerCustomerForStore(form, { slug: store.slug, name: store.name });
     saveOrder({
@@ -338,6 +356,21 @@ export function Checkout({ businesses }: { businesses: Business[] }) {
         <p className="mt-2 text-sm leading-6 text-muted">
           O pedido vai para o WhatsApp da loja. O pagamento é combinado por lá.
         </p>
+        {needsStoreWhatsapp ? (
+          <div className="mt-5">
+            <p className="text-xs leading-5 text-gold-soft">
+              Esta loja ainda não tem WhatsApp no cadastro. Cole o número com
+              DDD para enviar o pedido.
+            </p>
+            <input
+              value={formatPhone(storeWhatsapp)}
+              onChange={(event) => setStoreWhatsapp(event.target.value)}
+              placeholder="WhatsApp da loja (14) 9xxxx-xxxx"
+              inputMode="tel"
+              className="mt-3 h-11 w-full border border-line bg-background/70 px-4 text-sm outline-none focus:border-gold/55"
+            />
+          </div>
+        ) : null}
         <button
           type="button"
           onClick={sendOrder}

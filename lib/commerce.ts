@@ -11,6 +11,7 @@ const KEYS = {
   orders: "conexao-orders",
   comments: "conexao-comments",
   wallet: "conexao-cashback",
+  storeWhatsapp: "conexao-store-whatsapp",
 } as const;
 
 export type CartLine = CatalogItem & {
@@ -211,6 +212,31 @@ export function creditWallet(cents: number, label: string) {
   });
 }
 
+export function getStoreWhatsApp(slug: string) {
+  return readJson<Record<string, string>>(KEYS.storeWhatsapp, {})[slug] ?? "";
+}
+
+export function saveStoreWhatsApp(slug: string, whatsapp: string) {
+  const overlay = readJson<Record<string, string>>(KEYS.storeWhatsapp, {});
+  const digits = normalizeWhatsApp(whatsapp);
+  if (!digits) {
+    delete overlay[slug];
+  } else {
+    overlay[slug] = digits;
+  }
+  writeJson(KEYS.storeWhatsapp, overlay);
+}
+
+export function resolveStoreWhatsApp(
+  business: Pick<Business, "slug" | "whatsapp" | "phone">,
+) {
+  return (
+    getStoreWhatsApp(business.slug) ||
+    normalizeWhatsApp(business.whatsapp) ||
+    normalizeWhatsApp(business.phone)
+  );
+}
+
 export function buildWhatsAppOrder(
   business: Pick<Business, "name" | "whatsapp" | "phone">,
   user: ShopUser,
@@ -237,19 +263,26 @@ export function buildWhatsAppOrder(
 
   const text = encodeURIComponent(lines.join("\n"));
   const phone = whatsappDigits(business.whatsapp, business.phone);
-  return phone ? `https://wa.me/${phone}?text=${text}` : null;
+  return phone
+    ? `https://wa.me/${phone}?text=${text}`
+    : `https://wa.me/?text=${text}`;
+}
+
+export function normalizeWhatsApp(value?: string) {
+  const digits = (value ?? "").replace(/\D/g, "");
+  if (digits.length >= 12) return digits;
+  if (digits.length === 11 || digits.length === 10) return `55${digits}`;
+  return "";
+}
+
+export function toLocalWhatsApp(value?: string) {
+  const digits = (value ?? "").replace(/\D/g, "");
+  if (digits.startsWith("55") && digits.length >= 12) return digits.slice(2);
+  return digits;
 }
 
 function whatsappDigits(whatsapp?: string, phone?: string) {
-  const fromWhatsapp = (whatsapp ?? "").replace(/\D/g, "");
-  if (fromWhatsapp.length >= 12) return fromWhatsapp;
-  if (fromWhatsapp.length === 11) return `55${fromWhatsapp}`;
-  if (fromWhatsapp.length === 10) return `55${fromWhatsapp}`;
-
-  const fromPhone = (phone ?? "").replace(/\D/g, "");
-  if (fromPhone.length >= 12) return fromPhone;
-  if (fromPhone.length === 11) return `55${fromPhone}`;
-  return "";
+  return normalizeWhatsApp(whatsapp) || normalizeWhatsApp(phone);
 }
 
 const LAST_ORDER_KEY = "conexao-last-order";
@@ -257,7 +290,7 @@ const LAST_ORDER_KEY = "conexao-last-order";
 export type LastOrderNotice = {
   storeSlug: string;
   storeName: string;
-  whatsappUrl: string | null;
+  whatsappUrl: string;
   at: string;
 };
 
